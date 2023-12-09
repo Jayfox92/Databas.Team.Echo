@@ -1,8 +1,11 @@
 module com.example.databasteamecho {
     requires javafx.controls;
-    requires javafx.fxml;
-
-
-    opens com.example.databasteamecho to javafx.fxml;
+    requires java.persistence;
+    requires java.sql;
+    requires org.hibernate.orm.core;
+    requires hibernate.entitymanager;
     exports com.example.databasteamecho;
+    opens com.example.databasteamecho.entities to org.hibernate.orm.core;
 }
+
+
