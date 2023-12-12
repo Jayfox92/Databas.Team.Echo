@@ -9,8 +9,8 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
         <properties>
             <property name="javax.persistence.jdbc.url"
                       value="jdbc:mysql://127.0.0.1:3306/your_database_name?serverTimezone=UTC"/>
-            <property name="javax.persistence.jdbc.user" value="your_username"/>
-            <property name="javax.persistence.jdbc.password" value="your_password"/>
+            <property name="javax.persistence.jdbc.user" value="PiperGames"/>
+            <property name="javax.persistence.jdbc.password" value="123"/>
             <property name="hibernate.show_sql" value="false"/> <!-- Ändra denna till true för att se sql-kommandon -->
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
