@@ -33,13 +33,13 @@ public class GUI extends Application {
 
         Button exitButton = new Button("Quit");
         exitButton.setOnAction(event -> primaryStage.close());
-        exitButton.setStyle("-fx-font-size: 18; -fx-background-color: dodgerblue; -fx-text-fill: white");
+        exitButton.setStyle("-fx-font-size: 18; -fx-background-color: #236cb3; -fx-text-fill: white");
         exitButton.setPrefWidth(150);
         exitButton.setLayoutY(500);
         exitButton.setLayoutX(380);
 
-        exitButton.setOnMouseEntered(event -> exitButton.setStyle("-fx-font-size: 18; -fx-background-color: red; -fx-text-fill: white"));
-        exitButton.setOnMouseExited(event -> exitButton.setStyle("-fx-font-size: 18; -fx-background-color: dodgerblue; -fx-text-fill: white"));
+        exitButton.setOnMouseEntered(event -> exitButton.setStyle("-fx-font-size: 18; -fx-background-color: rgba(255,0,0,0.5); -fx-text-fill: white"));
+        exitButton.setOnMouseExited(event -> exitButton.setStyle("-fx-font-size: 18; -fx-background-color: #236cb3; -fx-text-fill: white"));
 
         Button playerButton = new Button("Manage players");
         playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkgreen; -fx-text-fill:white ");
@@ -47,7 +47,7 @@ public class GUI extends Application {
         playerButton.setLayoutY(150);
         playerButton.setLayoutX(125);
 
-        playerButton.setOnMouseEntered(event -> playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkseagreen; -fx-text-fill: white;"));
+        playerButton.setOnMouseEntered(event -> playerButton.setStyle("-fx-font-size: 18; -fx-background-color: rgba(0,100,0,0.48); -fx-text-fill: white;"));
         playerButton.setOnMouseExited(event -> playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkgreen; -fx-text-fill: white;"));
 
 
@@ -57,7 +57,7 @@ public class GUI extends Application {
         teamButton.setLayoutY(150);
         teamButton.setLayoutX(300);
 
-        teamButton.setOnMouseEntered(event -> teamButton.setStyle("-fx-font-size: 18; -fx-background-color: mediumpurple; -fx-text-fill: white;"));
+        teamButton.setOnMouseEntered(event -> teamButton.setStyle("-fx-font-size: 18; -fx-background-color: rgba(128,0,128,0.5); -fx-text-fill: white;"));
         teamButton.setOnMouseExited(event -> teamButton.setStyle("-fx-font-size: 18; -fx-background-color: purple; -fx-text-fill: white;"));
 
         Button gameButton = new Button("Manage games");
@@ -66,7 +66,7 @@ public class GUI extends Application {
         gameButton.setLayoutY(150);
         gameButton.setLayoutX(475);
 
-        gameButton.setOnMouseEntered(event -> gameButton.setStyle("-fx-font-size: 18; -fx-background-color: brown; -fx-text-fill: white;"));
+        gameButton.setOnMouseEntered(event -> gameButton.setStyle("-fx-font-size: 18; -fx-background-color: rgba(128,0,0,0.5); -fx-text-fill: white;"));
         gameButton.setOnMouseExited(event -> gameButton.setStyle("-fx-font-size: 18; -fx-background-color: maroon; -fx-text-fill: white;"));
 
         Button matchButton = new Button("Manage matches");
@@ -75,7 +75,7 @@ public class GUI extends Application {
         matchButton.setLayoutY(150);
         matchButton.setLayoutX(650);
 
-        matchButton.setOnMouseEntered(event -> matchButton.setStyle("-fx-font-size: 18; -fx-background-color: darkslateblue; -fx-text-fill: white;"));
+        matchButton.setOnMouseEntered(event -> matchButton.setStyle("-fx-font-size: 18; -fx-background-color: rgba(106,90,205,0.5); -fx-text-fill: white;"));
         matchButton.setOnMouseExited(event -> matchButton.setStyle("-fx-font-size: 18; -fx-background-color: slateblue; -fx-text-fill: white;"));
 
 
@@ -85,7 +85,7 @@ public class GUI extends Application {
         staffButton.setLayoutY(275);
         staffButton.setLayoutX(380);
 
-        staffButton.setOnMouseEntered(event -> staffButton.setStyle("-fx-font-size: 18; -fx-background-color: mediumturquoise; -fx-text-fill: white;"));
+        staffButton.setOnMouseEntered(event -> staffButton.setStyle("-fx-font-size: 18; -fx-background-color: rgba(0,128,128,0.5); -fx-text-fill: white;"));
         staffButton.setOnMouseExited(event -> staffButton.setStyle("-fx-font-size: 18; -fx-background-color: teal; -fx-text-fill: white;"));
 
 

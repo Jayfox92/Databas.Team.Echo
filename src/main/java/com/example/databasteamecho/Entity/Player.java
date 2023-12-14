@@ -1,14 +1,17 @@
 package com.example.databasteamecho.Entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 //Johann
 @Entity
-@Table(name = "players")
+@Table(name = "player")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "players_id")
+    @Column(name = "player_id")
     private int id;
     @Column(name = "first_name", length = 30, nullable = false)
     private String firstName;
@@ -28,6 +31,8 @@ public class Player {
     private String city;
     @Column(name = "country", length = 30)
     private String country;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "match")
+    private List<Match> listOfMatches = new ArrayList<>();
     public Player (){}
 
     public Player(int id, String firstName, String lastName, String alias, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
