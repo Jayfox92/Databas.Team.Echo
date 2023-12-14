@@ -7,13 +7,13 @@ import java.util.Date;
 @Entity
 @Table(name = "Matches")
 public class Match {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MatchID")
     private int iD;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "GamesID")
     private int gamesID;
 
@@ -33,6 +33,10 @@ public class Match {
     @Column(name = "MatchDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date matchDate;
+
+    @OneToOne
+    @JoinColumn(name = "games_id")
+    private Game game;
 
     public Match(){
 

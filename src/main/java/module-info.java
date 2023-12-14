@@ -6,7 +6,7 @@ module com.example.databasteamecho {
     requires hibernate.entitymanager;
    // exports com.example.databasteamecho;
     exports com.example.databasteamecho.View;
-    opens com.example.databasteamecho.entities to org.hibernate.orm.core;
+    //opens com.example.databasteamecho.Entities to org.hibernate.orm.core;
 }
 
 

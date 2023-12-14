@@ -2,23 +2,99 @@ package com.example.databasteamecho.View;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class GUI extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-
-        AnchorPane anchor = new AnchorPane();
-        Scene scene = new Scene(anchor, 300, 200);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
-    }
-
+    private Stage primaryStage;
     public static void main(String[] args) {
         launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+    this.primaryStage = primaryStage;
+    firstScene();
+    }
+
+
+    private void firstScene(){
+        primaryStage.setTitle("Piper Games");
+        AnchorPane welcomePane = new AnchorPane();
+
+        Text welcomeText = new Text ("Welcome to Piper Games administrative GUI");
+        welcomeText.setLayoutX(100);
+        welcomeText.setLayoutY(50);
+        welcomeText.setStyle("-fx-fill: darkviolet; -fx-font-size: 36; -fz-font-weight: bold; -fx-font-style: italic;");
+
+        Button exitButton = new Button("Quit");
+        exitButton.setOnAction(event -> primaryStage.close());
+        exitButton.setStyle("-fx-font-size: 18; -fx-background-color: dodgerblue; -fx-text-fill: white");
+        exitButton.setPrefWidth(150);
+        exitButton.setLayoutY(500);
+        exitButton.setLayoutX(380);
+
+        exitButton.setOnMouseEntered(event -> exitButton.setStyle("-fx-font-size: 18; -fx-background-color: red; -fx-text-fill: white"));
+        exitButton.setOnMouseExited(event -> exitButton.setStyle("-fx-font-size: 18; -fx-background-color: dodgerblue; -fx-text-fill: white"));
+
+        Button playerButton = new Button("Manage players");
+        playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkgreen; -fx-text-fill:white ");
+        playerButton.setPrefWidth(150);
+        playerButton.setLayoutY(150);
+        playerButton.setLayoutX(125);
+
+        playerButton.setOnMouseEntered(event -> playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkseagreen; -fx-text-fill: white;"));
+        playerButton.setOnMouseExited(event -> playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkgreen; -fx-text-fill: white;"));
+
+
+        Button teamButton = new Button("Manage teams");
+        teamButton.setStyle("-fx-font-size: 18; -fx-background-color: purple; -fx-text-fill:white ");
+        teamButton.setPrefWidth(150);
+        teamButton.setLayoutY(150);
+        teamButton.setLayoutX(300);
+
+        teamButton.setOnMouseEntered(event -> teamButton.setStyle("-fx-font-size: 18; -fx-background-color: mediumpurple; -fx-text-fill: white;"));
+        teamButton.setOnMouseExited(event -> teamButton.setStyle("-fx-font-size: 18; -fx-background-color: purple; -fx-text-fill: white;"));
+
+        Button gameButton = new Button("Manage games");
+        gameButton.setStyle("-fx-font-size: 18; -fx-background-color: maroon; -fx-text-fill:white ");
+        gameButton.setPrefWidth(150);
+        gameButton.setLayoutY(150);
+        gameButton.setLayoutX(475);
+
+        gameButton.setOnMouseEntered(event -> gameButton.setStyle("-fx-font-size: 18; -fx-background-color: brown; -fx-text-fill: white;"));
+        gameButton.setOnMouseExited(event -> gameButton.setStyle("-fx-font-size: 18; -fx-background-color: maroon; -fx-text-fill: white;"));
+
+        Button matchButton = new Button("Manage matches");
+        matchButton.setStyle("-fx-font-size: 18; -fx-background-color: slateblue; -fx-text-fill:white ");
+        matchButton.setPrefWidth(150);
+        matchButton.setLayoutY(150);
+        matchButton.setLayoutX(650);
+
+        matchButton.setOnMouseEntered(event -> matchButton.setStyle("-fx-font-size: 18; -fx-background-color: darkslateblue; -fx-text-fill: white;"));
+        matchButton.setOnMouseExited(event -> matchButton.setStyle("-fx-font-size: 18; -fx-background-color: slateblue; -fx-text-fill: white;"));
+
+
+        Button staffButton = new Button("Manage staff");
+        staffButton.setStyle("-fx-font-size: 18; -fx-background-color: teal; -fx-text-fill:white ");
+        staffButton.setPrefWidth(150);
+        staffButton.setLayoutY(275);
+        staffButton.setLayoutX(380);
+
+        staffButton.setOnMouseEntered(event -> staffButton.setStyle("-fx-font-size: 18; -fx-background-color: mediumturquoise; -fx-text-fill: white;"));
+        staffButton.setOnMouseExited(event -> staffButton.setStyle("-fx-font-size: 18; -fx-background-color: teal; -fx-text-fill: white;"));
+
+
+
+
+        welcomePane.getChildren().addAll(welcomeText, exitButton, playerButton,teamButton,gameButton,matchButton,staffButton);
+
+        Scene welcomeScene = new Scene(welcomePane, 900, 600);
+        primaryStage.setScene(welcomeScene);
+        primaryStage.show();
     }
 }
