@@ -1,8 +1,7 @@
-package com.example.databasteamecho.Entity;
+package com.example.databasteamecho.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 //Johann
@@ -22,7 +21,7 @@ public class Player {
     @Column(name = "email", length = 40)
     private String email;
     @Column(name = "phonenumber", length = 25)
-    private int phonenumber;
+    private long phonenumber;
     @Column(name = "street_adress", length = 40)
     private String streetAdress;
     @Column(name = "postal_code", length = 15)
@@ -31,7 +30,7 @@ public class Player {
     private String city;
     @Column(name = "country", length = 30)
     private String country;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "match")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "match")
     private List<Match> listOfMatches = new ArrayList<>();
     public Player (){}
 
@@ -62,6 +61,14 @@ public class Player {
 
     public int getId() {
         return id;
+    }
+
+    public List<Match> getListOfMatches() {
+        return listOfMatches;
+    }
+
+    public void setListOfMatches(List<Match> listOfMatches) {
+        this.listOfMatches = listOfMatches;
     }
 
     public void setId(int id) {
@@ -100,7 +107,7 @@ public class Player {
         this.email = email;
     }
 
-    public int getPhonenumber() {
+    public long getPhonenumber() {
         return phonenumber;
     }
 
@@ -139,4 +146,5 @@ public class Player {
     public void setCountry(String country) {
         this.country = country;
     }
+
 }

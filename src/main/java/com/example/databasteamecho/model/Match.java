@@ -1,4 +1,4 @@
-package com.example.databasteamecho.Entity;
+package com.example.databasteamecho.model;
 
 //FAHRI
 
@@ -15,13 +15,14 @@ public class Match {
     @Column(name = "match_id")
     private int iD;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
 
-    @OneToMany
+    //want one to many but getting relation-error, new table might solve?
+    @ManyToMany
     @JoinColumn(name = "player_id")
-    private Set<Player> listOfPlayers = new HashSet<>();
+    private List<Player> listOfPlayers = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "team_id")
@@ -74,4 +75,23 @@ public class Match {
     public void setMatchDate(Date matchDate) {
         this.matchDate = matchDate;
     }
+    public Game getGame(){return game;}
+    public void setGame(Game game){this.game = game;}
+
+    public List<Player> getListOfPlayers() {
+        return listOfPlayers;
+    }
+
+    public void setListOfPlayers(List<Player> listOfPlayers) {
+        this.listOfPlayers = listOfPlayers;
+    }
+
+    public List<Team> getListOfTeams() {
+        return listOfTeams;
+    }
+
+    public void setListOfTeams(List<Team> listOfTeams) {
+        this.listOfTeams = listOfTeams;
+    }
 }
+

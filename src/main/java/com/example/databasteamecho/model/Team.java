@@ -1,4 +1,4 @@
-package com.example.databasteamecho.Entity;
+package com.example.databasteamecho.model;
 
 import javax.persistence.*;
 
@@ -33,12 +33,20 @@ public class Team {
 
   }
 
-  public Team(int id, String teamName, int gameId) {
+
+
+    public Team(int id, String teamName) {
 
     this.id = id;
     this.teamName = teamName;
 
     }
+
+    public Team(String teamName) {
+        this.teamName = teamName;
+    }
+
+
 
     public int getId() {
 
@@ -63,7 +71,21 @@ public class Team {
 
     }
 
+    public Game getGame() {
+        return game;
+    }
 
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Match getMatch() {
+        return match;
+    }
+
+    public void setMatch(Match match) {
+        this.match = match;
+    }
     
 
 

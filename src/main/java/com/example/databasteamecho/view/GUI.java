@@ -1,5 +1,7 @@
-package com.example.databasteamecho.View;
+package com.example.databasteamecho.view;
 
+import com.example.databasteamecho.controller.PlayerController;
+import data.PlayerData;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,18 +13,23 @@ import java.io.IOException;
 
 public class GUI extends Application {
     private Stage primaryStage;
+    private PlayerController playerController;
     public static void main(String[] args) {
+        PlayerData playerData = new PlayerData();
+        playerData.createPlayers();
         launch();
     }
+
 
     @Override
     public void start(Stage primaryStage) throws IOException {
     this.primaryStage = primaryStage;
+    this.playerController = new PlayerController();
     firstScene();
     }
 
 
-    private void firstScene(){
+    public void firstScene(){
         primaryStage.setTitle("Piper Games");
         AnchorPane welcomePane = new AnchorPane();
 
@@ -97,4 +104,31 @@ public class GUI extends Application {
         primaryStage.setScene(welcomeScene);
         primaryStage.show();
     }
+
+    public void playerScene(){
+        AnchorPane anchorPane = new AnchorPane();
+
+        Button playerButton = new Button("List players");
+        playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkgreen; -fx-text-fill:white ");
+        playerButton.setPrefWidth(150);
+        playerButton.setLayoutY(150);
+        playerButton.setLayoutX(125);
+
+        playerButton.setOnMouseEntered(event -> playerButton.setStyle("-fx-font-size: 18; -fx-background-color: rgba(0,100,0,0.48); -fx-text-fill: white;"));
+        playerButton.setOnMouseExited(event -> playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkgreen; -fx-text-fill: white;"));
+
+        playerButton.setOnAction(event -> listPlayers());
+
+        anchorPane.getChildren().addAll(playerButton);
+
+        Scene playerScene = new Scene(anchorPane, 900, 600);
+
+
+    }
+
+    public void listPlayers(){
+        playerController.getAll(true);
+    }
+
+
 }
