@@ -16,4 +16,7 @@ public class Game {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "match")
     private HashSet<Match> listOfMatches = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "team")
+    private List<Team> listOfTeams = new ArrayList<>();
 }
