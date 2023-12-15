@@ -23,15 +23,14 @@ public class Match {
     @JoinColumn(name = "player_id")
     private Set<Player> listOfPlayers = new HashSet<>();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TeamNameID")
-    private int teamNameID;
+    @OneToMany
+    @JoinColumn(name = "team_id")
+    private List<Team> listOfTeams = new ArrayList<>();
 
-    @Column(name = "Result")
+    @Column(name = "result")
     private int result;
 
-    @Column(name = "MatchDate")
+    @Column(name = "match_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date matchDate;
 
@@ -47,7 +46,6 @@ public class Match {
 
     public Match(int iD, int gamesID, int playerID, int teamNameID, int result, Date matchDate){
         this.iD = iD;
-        this.teamNameID = teamNameID;
         this.result = result;
         this.matchDate = matchDate;
 
@@ -59,14 +57,6 @@ public class Match {
 
     public void setiD(int iD) {
         this.iD = iD;
-    }
-
-    public int getTeamNameID() {
-        return teamNameID;
-    }
-
-    public void setTeamNameID(int teamNameID) {
-        this.teamNameID = teamNameID;
     }
 
     public int getResult() {
