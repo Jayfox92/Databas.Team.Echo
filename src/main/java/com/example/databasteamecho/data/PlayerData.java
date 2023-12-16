@@ -1,4 +1,4 @@
-package data;
+package com.example.databasteamecho.data;
 
 import com.example.databasteamecho.model.Player;
 

@@ -22,7 +22,7 @@ public class PlayerController {
             transaction.commit();
             if(printOut){
                 for (Player player:playerListToReturn){
-                    System.out.println(player.getId()+", "+player.getFirstName() + ", "+player.getAlias());
+                    System.out.println("ID:"+player.getId()+", First name:"+player.getFirstName() + ", Nickname:"+player.getNickname());
                 }
             }
             return playerListToReturn;

@@ -2,7 +2,9 @@ package com.example.databasteamecho.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 //Johann
 @Entity
@@ -17,7 +19,7 @@ public class Player {
     @Column(name = "last_name", length = 30, nullable = false)
     private String lastName;
     @Column(name = "nickname", length = 30, nullable = false)
-    private String alias;
+    private String nickname;
     @Column(name = "email", length = 40)
     private String email;
     @Column(name = "phonenumber", length = 25)
@@ -30,15 +32,15 @@ public class Player {
     private String city;
     @Column(name = "country", length = 30)
     private String country;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "match")
-    private List<Match> listOfMatches = new ArrayList<>();
+    @ManyToMany(mappedBy = "matches_ListOfPlayers")
+    private Set<Matches> player_ListOfMatches = new HashSet<>();
     public Player (){}
 
-    public Player(int id, String firstName, String lastName, String alias, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
+    public Player(int id, String firstName, String lastName, String nickname, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.alias = alias;
+        this.nickname = nickname;
         this.email = email;
         this.phonenumber = phonenumber;
         this.streetAdress = streetAdress;
@@ -47,10 +49,10 @@ public class Player {
         this.country = country;
     }
 
-    public Player(String firstName, String lastName, String alias, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
+    public Player(String firstName, String lastName, String nickname, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.alias = alias;
+        this.nickname = nickname;
         this.email = email;
         this.phonenumber = phonenumber;
         this.streetAdress = streetAdress;
@@ -61,14 +63,6 @@ public class Player {
 
     public int getId() {
         return id;
-    }
-
-    public List<Match> getListOfMatches() {
-        return listOfMatches;
-    }
-
-    public void setListOfMatches(List<Match> listOfMatches) {
-        this.listOfMatches = listOfMatches;
     }
 
     public void setId(int id) {
@@ -91,12 +85,12 @@ public class Player {
         this.lastName = lastName;
     }
 
-    public String getAlias() {
-        return alias;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setAlias(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -147,4 +141,11 @@ public class Player {
         this.country = country;
     }
 
+    public Set<Matches> getListOfMatches() {
+        return player_ListOfMatches;
+    }
+
+    public void setListOfMatches(Set<Matches> listOfMatches) {
+        this.player_ListOfMatches = listOfMatches;
+    }
 }

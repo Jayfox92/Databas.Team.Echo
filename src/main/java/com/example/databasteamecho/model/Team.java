@@ -1,10 +1,13 @@
 package com.example.databasteamecho.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 //Abenezer
 @Entity
-
 @Table (name="team")
 public class Team {
 
@@ -18,23 +21,18 @@ public class Team {
     private  String teamName;
 
 
-    @OneToOne
-    @JoinColumn(name = "game_id")
-    private Game game;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Match match;
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+    name = "team_list_of_games",
+    joinColumns = {@JoinColumn(name = "game_id")}
+    )
+    private Set<Game> team_ListOfGames = new HashSet<>();
+
+    @ManyToMany(mappedBy = "matches_ListOfTeams")
+    private Set<Matches> team_ListOfMatches = new HashSet<>();
 
 
-
-
-
-
-  public Team() {
-
-  }
-
-
-
+  public Team() {}
     public Team(int id, String teamName) {
 
     this.id = id;
@@ -71,31 +69,19 @@ public class Team {
 
     }
 
-    public Game getGame() {
-        return game;
+    public Set<Game> getTeam_ListOfGames() {
+        return team_ListOfGames;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setTeam_ListOfGames(Set<Game> team_ListOfGames) {
+        this.team_ListOfGames = team_ListOfGames;
     }
 
-    public Match getMatch() {
-        return match;
+    public Set<Matches> getTeam_ListOfMatches() {
+        return team_ListOfMatches;
     }
 
-    public void setMatch(Match match) {
-        this.match = match;
+    public void setTeam_ListOfMatches(Set<Matches> team_ListOfMatches) {
+        this.team_ListOfMatches = team_ListOfMatches;
     }
-    
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,7 +1,7 @@
 package com.example.databasteamecho.view;
 
 import com.example.databasteamecho.controller.PlayerController;
-import data.PlayerData;
+import com.example.databasteamecho.model.Player;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,13 +10,17 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUI extends Application {
     private Stage primaryStage;
-    private PlayerController playerController;
+    PlayerController playerController;
+    //private final PlayerController playerController = new PlayerController();
     public static void main(String[] args) {
-        PlayerData playerData = new PlayerData();
-        playerData.createPlayers();
+        //PlayerData playerData = new PlayerData();
+        //playerData.createPlayers();
+        //playerController = new PlayerController();
         launch();
     }
 
@@ -25,6 +29,7 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws IOException {
     this.primaryStage = primaryStage;
     this.playerController = new PlayerController();
+
     firstScene();
     }
 
@@ -49,6 +54,7 @@ public class GUI extends Application {
         exitButton.setOnMouseExited(event -> exitButton.setStyle("-fx-font-size: 18; -fx-background-color: #236cb3; -fx-text-fill: white"));
 
         Button playerButton = new Button("Manage players");
+        playerButton.setOnAction(event -> playerScene());
         playerButton.setStyle("-fx-font-size: 18; -fx-background-color: darkgreen; -fx-text-fill:white ");
         playerButton.setPrefWidth(150);
         playerButton.setLayoutY(150);
@@ -103,6 +109,7 @@ public class GUI extends Application {
         Scene welcomeScene = new Scene(welcomePane, 900, 600);
         primaryStage.setScene(welcomeScene);
         primaryStage.show();
+
     }
 
     public void playerScene(){
@@ -122,6 +129,8 @@ public class GUI extends Application {
         anchorPane.getChildren().addAll(playerButton);
 
         Scene playerScene = new Scene(anchorPane, 900, 600);
+        primaryStage.setScene(playerScene);
+        primaryStage.show();
 
 
     }

@@ -7,12 +7,14 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
     <persistence-unit name="hibernate" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
+           <!-- <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/> -->
             <property name="javax.persistence.jdbc.url"
                       value="jdbc:mysql://127.0.0.1:3306/PiperGames?serverTimezone=UTC"/>
             <property name="javax.persistence.jdbc.user" value="PiperGames"/>
             <property name="javax.persistence.jdbc.password" value="123"/>
             <property name="hibernate.show_sql" value="false"/> <!-- Ändra denna till true för att se sql-kommandon -->
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="javax.persistence.sql-load-script-source" value="META-INF/data.sql"/>
         </properties>
     </persistence-unit>
 </persistence>

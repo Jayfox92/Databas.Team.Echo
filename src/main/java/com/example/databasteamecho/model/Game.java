@@ -2,8 +2,11 @@ package com.example.databasteamecho.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+//Johann, Abenezer & Fahri
 @Entity
 @Table(name = "game")
 public class Game {
@@ -18,11 +21,11 @@ public class Game {
     @Column(name = "players_per_team")
     private int playersPerTeam;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "match")
-    private List<Match> listOfMatches = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "game")
+    private Set<Matches> game_ListOfMatches = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "team")
-    private Team team;
+    @ManyToMany(mappedBy = "team_ListOfGames")
+    private Set<Team> game_ListOfTeams = new HashSet<>();
 
 
     public Game(){}
@@ -42,14 +45,20 @@ public class Game {
     public void setGameName(String gameName){this.gameName = gameName;}
     public int getPlayersPerTeam(){return playersPerTeam;}
     public void setPlayersPerTeam(int playersPerTeam){this.playersPerTeam = playersPerTeam;}
-    public Team getTeam(){return team;}
-    public void setTeam(Team team){this.team = team;}
 
-    public List<Match> getListOfMatches() {
-        return listOfMatches;
+    public Set<Matches> getGame_ListOfMatches() {
+        return game_ListOfMatches;
     }
 
-    public void setListOfMatches(List<Match> listOfMatches) {
-        this.listOfMatches = listOfMatches;
+    public void setGame_ListOfMatches(Set<Matches> game_ListOfMatches) {
+        this.game_ListOfMatches = game_ListOfMatches;
+    }
+
+    public Set<Team> getGame_ListOfTeams() {
+        return game_ListOfTeams;
+    }
+
+    public void setGame_ListOfTeams(Set<Team> game_ListOfTeams) {
+        this.game_ListOfTeams = game_ListOfTeams;
     }
 }

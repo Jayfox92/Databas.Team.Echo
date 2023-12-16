@@ -4,9 +4,10 @@ module com.example.databasteamecho {
     requires java.sql;
     requires org.hibernate.orm.core;
     requires hibernate.entitymanager;
-   // exports com.example.databasteamecho;
+    exports com.example.databasteamecho.controller;
+    exports com.example.databasteamecho.model;
     exports com.example.databasteamecho.view;
-    //opens com.example.databasteamecho.Entities to org.hibernate.orm.core;
+    opens com.example.databasteamecho.model to org.hibernate.orm.core;
 }
 
 
