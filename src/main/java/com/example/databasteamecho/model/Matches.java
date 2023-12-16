@@ -12,7 +12,7 @@ public class Matches {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "match_id")
+    @Column(name = "matches_id")
     private int id;
 
     @Column(name = "result")

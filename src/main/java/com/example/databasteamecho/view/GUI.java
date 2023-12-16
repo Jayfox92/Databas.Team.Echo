@@ -8,19 +8,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class GUI extends Application {
     private Stage primaryStage;
     PlayerController playerController;
-    //private final PlayerController playerController = new PlayerController();
+
     public static void main(String[] args) {
-        //PlayerData playerData = new PlayerData();
-        //playerData.createPlayers();
-        //playerController = new PlayerController();
+
         launch();
     }
 
@@ -84,7 +80,7 @@ public class GUI extends Application {
 
         Button matchButton = new Button("Manage matches");
         matchButton.setStyle("-fx-font-size: 18; -fx-background-color: slateblue; -fx-text-fill:white ");
-        matchButton.setPrefWidth(150);
+        matchButton.setPrefWidth(175);
         matchButton.setLayoutY(150);
         matchButton.setLayoutX(650);
 

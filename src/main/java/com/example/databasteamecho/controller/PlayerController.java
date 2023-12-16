@@ -10,7 +10,7 @@ public class PlayerController {
 
     public static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("hibernate");
 
-    public List<Player> getAll(boolean printOut){
+    public List<Player> getAll(boolean printOut){//lista samtliga players
         EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         List<Player> playerListToReturn = new ArrayList<>();
