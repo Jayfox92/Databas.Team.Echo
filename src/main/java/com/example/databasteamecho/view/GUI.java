@@ -19,9 +19,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import org.controlsfx.control.CheckComboBox;
+
+import javax.persistence.Entity;
 
 
 public class GUI extends Application {
@@ -197,13 +200,24 @@ public class GUI extends Application {
 
 
 
+                final CheckComboBox<DisplayItem> checkComboBox = new CheckComboBox<>();
+                checkComboBox.getItems().addAll(
+                        new DisplayItem("ID", "id", Integer.class),
+                        new DisplayItem("First name", "firstName", String.class),
+                        new DisplayItem("Last name", "lastName",String.class),
+                        new DisplayItem("Nickname", "nickname",String.class),
+                        new DisplayItem("E-mail", "email",String.class),
+                        new DisplayItem("Phone number", "phonenumber",Long.class),
+                        new DisplayItem("Street adress", "streetAdress",String.class),
+                        new DisplayItem("Postal code", "postalCode",String.class),
+                        new DisplayItem("City", "city",String.class),
+                        new DisplayItem("Country", "country",String.class)
+                );
 
-                ObservableList<String> columnNames = FXCollections.observableArrayList("First name", "Last name");
 
-                final CheckComboBox<String> checkComboBox = new CheckComboBox<String>(columnNames);
-                checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+                checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<DisplayItem>() {
                     @Override
-                    public void onChanged(Change<? extends String> change) {
+                    public void onChanged(Change<? extends DisplayItem> change) {
                         if(change.getList().size() == 0){
                             checkComboBox.getCheckModel().clearChecks();
 
@@ -220,7 +234,7 @@ public class GUI extends Application {
                 checkComboBox.setLayoutX(350);
                 checkComboBox.setPrefWidth(200);
 
-                generateButton.setOnAction(event1 -> generatePlayerList(anchorPane));
+                generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox));
 
                 anchorPane.getChildren().addAll(checkComboBox,generateButton);
             }
@@ -237,33 +251,39 @@ public class GUI extends Application {
 
     }
 
-    public void generatePlayerList(AnchorPane anchorPane){
+    public void generatePlayerList(AnchorPane anchorPane, CheckComboBox checkComboBox)  {
+        anchorPane.getChildren().removeIf(node -> node instanceof TableView);
         TableView<Player> tableView = new TableView<>();
+        ObservableList<DisplayItem> displayList = checkComboBox.getCheckModel().getCheckedItems();
+        for(DisplayItem displayItem:displayList){
+            tableView.getColumns().add(createTableColumn(displayItem.getLabel(), displayItem.getValue(), displayItem.getType()));
+        }
 
         List<Player> playerList = playerController.getAll(false);
+
         ObservableList<Player> observableList = FXCollections.observableList(playerList);
 
-
         tableView.setItems(observableList);
-        TableColumn<Player, String> firstNameCol = new TableColumn<>("First name");
-        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        TableColumn<Player, String> lastNameCol = new TableColumn<>("Last name");
-        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
-        tableView.getColumns().addAll(firstNameCol,lastNameCol);
+
 
         tableView.setLayoutX(50);
         tableView.setLayoutY(225);
-        tableView.setPrefHeight(200);
-
+        tableView.setPrefHeight(playerList.size()*30);
+        tableView.setPrefWidth(displayList.size()*100);
 
         anchorPane.getChildren().addAll(tableView);
 
     }
-    public void listPlayers(){
-        playerController.getAll(false);
+    private <E,T> TableColumn<E, T> createTableColumn(String label,String propertyName,Class<T> type) {
+        TableColumn<E, T> column = new TableColumn<>(label);
 
+        column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
+        column.setEditable(true);
+
+        return column;
     }
+
 
 
 }
