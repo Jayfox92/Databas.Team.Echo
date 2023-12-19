@@ -22,19 +22,26 @@ public class Game {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "game")
     private Set<Matches> game_ListOfMatches = new HashSet<>();
 
-    @ManyToMany(mappedBy = "team_ListOfGames")
-    private Set<Team> game_ListOfTeams = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "game")
+    private Set<Team> teams; // A game can have multiple teams // Abenezer
+
 
 
     public Game(){}
-    public Game(int id, String gameName, int playersPerTeam){
+
+    public Game(int id, String gameName, int playersPerTeam, Set<Matches> game_ListOfMatches, Set<Team> teams) {
         this.id = id;
         this.gameName = gameName;
         this.playersPerTeam = playersPerTeam;
+        this.game_ListOfMatches = game_ListOfMatches;
+        this.teams = teams;
     }
-    public Game(String gameName, int playersPerTeam){
+
+    public Game(String gameName, int playersPerTeam, Set<Matches> game_ListOfMatches, Set<Team> teams) {
         this.gameName = gameName;
         this.playersPerTeam = playersPerTeam;
+        this.game_ListOfMatches = game_ListOfMatches;
+        this.teams = teams;
     }
 
     public int getId(){return id;}
@@ -52,11 +59,11 @@ public class Game {
         this.game_ListOfMatches = game_ListOfMatches;
     }
 
-    public Set<Team> getGame_ListOfTeams() {
-        return game_ListOfTeams;
+    public Set<Team> getTeams() {
+        return teams;
     }
 
-    public void setGame_ListOfTeams(Set<Team> game_ListOfTeams) {
-        this.game_ListOfTeams = game_ListOfTeams;
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
     }
 }

@@ -19,27 +19,38 @@ public class Team {
     private  String teamName;
 
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-    name = "team_list_of_games",
-    joinColumns = {@JoinColumn(name = "game_id")}
-    )
-    private Set<Game> team_ListOfGames = new HashSet<>();
+    @ManyToOne  // Changed from ManyToMany since  a team is always tied to a specific game //Abenezer
+    @JoinColumn(name = "game_id")
+    private Game game;
+
+    @OneToMany(mappedBy = "team")
+    private Set<Player> players;  // New field for associating players
+
 
     @ManyToMany(mappedBy = "matches_ListOfTeams")
     private Set<Matches> team_ListOfMatches = new HashSet<>();
 
+    @OneToMany(mappedBy = "winnerTeam")  // New field for matches won by the team //Abenezer
+    private Set<Matches> wonMatches = new HashSet<>();
+
 
   public Team() {}
-    public Team(int id, String teamName) {
 
-    this.id = id;
-    this.teamName = teamName;
-
+    public Team(int id, String teamName, Game game, Set<Player> players, Set<Matches> team_ListOfMatches, Set<Matches> wonMatches) {
+        this.id = id;
+        this.teamName = teamName;
+        this.game = game;
+        this.players = players;
+        this.team_ListOfMatches = team_ListOfMatches;
+        this.wonMatches = wonMatches;
     }
 
-    public Team(String teamName) {
+    public Team(String teamName, Game game, Set<Player> players, Set<Matches> team_ListOfMatches, Set<Matches> wonMatches) {
         this.teamName = teamName;
+        this.game = game;
+        this.players = players;
+        this.team_ListOfMatches = team_ListOfMatches;
+        this.wonMatches = wonMatches;
     }
 
 
@@ -67,13 +78,22 @@ public class Team {
 
     }
 
-    public Set<Game> getTeam_ListOfGames() {
-        return team_ListOfGames;
+    public Game getGame() {
+        return game;
     }
 
-    public void setTeam_ListOfGames(Set<Game> team_ListOfGames) {
-        this.team_ListOfGames = team_ListOfGames;
+    public void setGame(Game game) {
+        this.game = game;
     }
+
+    public Set<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<Player> players) {
+        this.players = players;
+    }
+
 
     public Set<Matches> getTeam_ListOfMatches() {
         return team_ListOfMatches;
@@ -81,5 +101,13 @@ public class Team {
 
     public void setTeam_ListOfMatches(Set<Matches> team_ListOfMatches) {
         this.team_ListOfMatches = team_ListOfMatches;
+    }
+
+    public Set<Matches> getWonMatches() {
+        return wonMatches;
+    }
+
+    public void setWonMatches(Set<Matches> wonMatches) {
+        this.wonMatches = wonMatches;
     }
 }

@@ -21,7 +21,7 @@ public class Player {
     @Column(name = "email", length = 40)
     private String email;
     @Column(name = "phonenumber", length = 25)
-    private long phonenumber;
+    private String phonenumber;
     @Column(name = "street_adress", length = 40)
     private String streetAdress;
     @Column(name = "postal_code", length = 15)
@@ -32,9 +32,18 @@ public class Player {
     private String country;
     @ManyToMany(mappedBy = "matches_ListOfPlayers")
     private Set<Matches> player_ListOfMatches = new HashSet<>();
+
+    @ManyToOne  // Establishes a ManyToOne relationship with Team
+    @JoinColumn(name = "team_id")  // Foreign key column in player table
+    private Team team;  // New field to link player to a team
+
+    @OneToMany(mappedBy = "winnerPlayer")  // New field for matches won by the player //Abenezer
+    private Set<Matches> wonMatches = new HashSet<>();
+
+
     public Player (){}
 
-    public Player(int id, String firstName, String lastName, String nickname, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
+    public Player(int id, String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, int postalCode, String city, String country, Set<Matches> player_ListOfMatches, Team team, Set<Matches> wonMatches) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,9 +54,12 @@ public class Player {
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
+        this.player_ListOfMatches = player_ListOfMatches;
+        this.team = team;
+        this.wonMatches = wonMatches;
     }
 
-    public Player(String firstName, String lastName, String nickname, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
+    public Player(String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, int postalCode, String city, String country, Set<Matches> player_ListOfMatches, Team team, Set<Matches> wonMatches) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickname = nickname;
@@ -57,7 +69,11 @@ public class Player {
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
+        this.player_ListOfMatches = player_ListOfMatches;
+        this.team = team;
+        this.wonMatches = wonMatches;
     }
+
 
     public int getId() {
         return id;
@@ -87,9 +103,9 @@ public class Player {
         return nickname;
     }
 
-    public void setAlias(String nickname) {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
+    } //changed to setNickname //Abenezer
 
     public String getEmail() {
         return email;
@@ -99,13 +115,13 @@ public class Player {
         this.email = email;
     }
 
-    public long getPhonenumber() {
+    public String getPhonenumber() {
         return phonenumber;
     }
 
-    public void setPhonenumber(int phonenumber) {
+    public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
-    }
+    } // changed the parameter to long to match the phonenumber field type //Abenezer
 
     public String getStreetAdress() {
         return streetAdress;
@@ -145,5 +161,29 @@ public class Player {
 
     public void setListOfMatches(Set<Matches> listOfMatches) {
         this.player_ListOfMatches = listOfMatches;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Set<Matches> getPlayer_ListOfMatches() {
+        return player_ListOfMatches;
+    }
+
+    public void setPlayer_ListOfMatches(Set<Matches> player_ListOfMatches) {
+        this.player_ListOfMatches = player_ListOfMatches;
+    }
+
+    public Set<Matches> getWonMatches() {
+        return wonMatches;
+    }
+
+    public void setWonMatches(Set<Matches> wonMatches) {
+        this.wonMatches = wonMatches;
     }
 }
