@@ -5,6 +5,7 @@ import com.example.databasteamecho.model.Player;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class PlayerController {
 
@@ -40,22 +41,16 @@ public class PlayerController {
     }
 
 
-    /*public void addPlayer() {
+    public boolean addPlayer(Object player) {
 
         EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         try {
             transaction = entityManager.getTransaction();
             transaction.begin();
-            TypedQuery<Player> resultList = entityManager.createQuery("FROM Player", Player.class);
-            playerListToReturn.addAll(resultList.getResultList());
+            entityManager.persist(player);
             transaction.commit();
-            if(printOut){
-                for (Player player:playerListToReturn){
-                    System.out.println("ID:"+player.getId()+", First name:"+player.getFirstName() + ", Nickname:"+player.getNickname());
-                }
-            }
-            return playerListToReturn;
+            return true;
         } catch (Exception e){
             if(transaction != null){
                 transaction.rollback();
@@ -64,8 +59,7 @@ public class PlayerController {
         } finally {
             entityManager.close();
         }
+        return false;
+    }
 
-
-        return null;
-    }*/
 }
