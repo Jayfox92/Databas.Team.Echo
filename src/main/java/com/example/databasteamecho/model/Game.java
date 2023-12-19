@@ -19,11 +19,13 @@ public class Game {
     @Column(name = "players_per_team")
     private int playersPerTeam;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "game")
+    @OneToMany(mappedBy = "game")
     private Set<Matches> game_ListOfMatches = new HashSet<>();
 
     @ManyToMany(mappedBy = "team_ListOfGames")
     private Set<Team> game_ListOfTeams = new HashSet<>();
+    @ManyToMany(mappedBy = "player_gameList")
+    private Set<Player> game_ListOfPlayers = new HashSet<>();
 
 
     public Game(){}
@@ -58,5 +60,13 @@ public class Game {
 
     public void setGame_ListOfTeams(Set<Team> game_ListOfTeams) {
         this.game_ListOfTeams = game_ListOfTeams;
+    }
+
+    public Set<Player> getGame_ListOfPlayers() {
+        return game_ListOfPlayers;
+    }
+
+    public void setGame_ListOfPlayers(Set<Player> game_ListOfPlayers) {
+        this.game_ListOfPlayers = game_ListOfPlayers;
     }
 }

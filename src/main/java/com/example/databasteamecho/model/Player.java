@@ -20,8 +20,8 @@ public class Player {
     private String nickname;
     @Column(name = "email", length = 40)
     private String email;
-    @Column(name = "phonenumber", length = 25)
-    private long phonenumber;
+    @Column(name = "phonenumber", length = 40)
+    private String phonenumber;
     @Column(name = "street_adress", length = 40)
     private String streetAdress;
     @Column(name = "postal_code", length = 15)
@@ -32,9 +32,18 @@ public class Player {
     private String country;
     @ManyToMany(mappedBy = "matches_ListOfPlayers")
     private Set<Matches> player_ListOfMatches = new HashSet<>();
+    @OneToOne(mappedBy = "player")
+    private Team team;
+    @ManyToMany
+    @JoinTable(
+            name = "manytomany_player_game",
+            joinColumns = @JoinColumn(name = "player_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
+    private Set<Game> player_gameList = new HashSet<>();
     public Player (){}
 
-    public Player(int id, String firstName, String lastName, String nickname, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
+    public Player(int id, String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, int postalCode, String city, String country) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,7 +56,7 @@ public class Player {
         this.country = country;
     }
 
-    public Player(String firstName, String lastName, String nickname, String email, int phonenumber, String streetAdress, int postalCode, String city, String country) {
+    public Player(String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, int postalCode, String city, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickname = nickname;
@@ -87,7 +96,7 @@ public class Player {
         return nickname;
     }
 
-    public void setAlias(String nickname) {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
@@ -99,11 +108,11 @@ public class Player {
         this.email = email;
     }
 
-    public long getPhonenumber() {
+    public String getPhonenumber() {
         return phonenumber;
     }
 
-    public void setPhonenumber(long phonenumber) {
+    public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
 
@@ -145,5 +154,21 @@ public class Player {
 
     public void setListOfMatches(Set<Matches> listOfMatches) {
         this.player_ListOfMatches = listOfMatches;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Set<Game> getPlayer_gameList() {
+        return player_gameList;
+    }
+
+    public void setPlayer_gameList(Set<Game> player_gameList) {
+        this.player_gameList = player_gameList;
     }
 }

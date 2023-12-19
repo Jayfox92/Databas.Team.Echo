@@ -16,37 +16,46 @@ public class Matches {
     private int id;
 
     @Column(name = "result")
-    private int result;
+    private String result;
 
     @Column(name = "match_date", length = 30)
     private String matchDate;
 
-    @ManyToOne
+    @Column(name = "match_status", length = 30)
+    private String matchStatus;
+
+    @Column(name = "winner_id")
+    private int winnerId;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "game_id")
     private Game game;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "matches_player_id_table",
-            joinColumns = {@JoinColumn(name = "player_id")}
+            name = "manytomany_matches_player",
+            joinColumns = @JoinColumn(name = "matches_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_id")
     )
     private Set<Player> matches_ListOfPlayers = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "matches_team_id",
-            joinColumns = {@JoinColumn(name = "team_id")})
+            name = "manytomany_matches_team",
+            joinColumns = @JoinColumn(name = "matches_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
     private Set<Team> matches_ListOfTeams = new HashSet<>();
 
 
 
     public Matches(){}
-    public Matches(int result, String matchDate){
+    public Matches(String result, String matchDate){
         this.result = result;
         this.matchDate = matchDate;
     }
 
-    public Matches(int id, int result, String matchDate){
+    public Matches(int id, String result, String matchDate){
         this.id = id;
         this.result = result;
         this.matchDate = matchDate;
@@ -61,11 +70,11 @@ public class Matches {
         this.id = id;
     }
 
-    public int getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(String result) {
         this.result = result;
     }
 
@@ -76,6 +85,23 @@ public class Matches {
     public void setMatchDate(String matchDate) {
         this.matchDate = matchDate;
     }
+
+    public String getMatchStatus() {
+        return matchStatus;
+    }
+
+    public void setMatchStatus(String matchStatus) {
+        this.matchStatus = matchStatus;
+    }
+
+    public int getWinnerId() {
+        return winnerId;
+    }
+
+    public void setWinnerId(int winnerId) {
+        this.winnerId = winnerId;
+    }
+
     public Game getGame(){return game;}
     public void setGame(Game game){this.game = game;}
 

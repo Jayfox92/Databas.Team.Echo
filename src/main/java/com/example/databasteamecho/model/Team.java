@@ -21,13 +21,16 @@ public class Team {
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
-    name = "team_list_of_games",
-    joinColumns = {@JoinColumn(name = "game_id")}
+    name = "manytomany_team_game",
+    joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
     )
     private Set<Game> team_ListOfGames = new HashSet<>();
 
     @ManyToMany(mappedBy = "matches_ListOfTeams")
     private Set<Matches> team_ListOfMatches = new HashSet<>();
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Player player;
 
 
   public Team() {}
@@ -81,5 +84,13 @@ public class Team {
 
     public void setTeam_ListOfMatches(Set<Matches> team_ListOfMatches) {
         this.team_ListOfMatches = team_ListOfMatches;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

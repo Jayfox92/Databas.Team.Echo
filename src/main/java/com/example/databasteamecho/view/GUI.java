@@ -186,7 +186,7 @@ public class GUI extends Application {
         doneButton.setOnAction(event -> playerScene());
 
 
-        EventHandler<MouseEvent> eventHandlerList = new EventHandler<MouseEvent>() {
+       /* EventHandler<MouseEvent> eventHandlerList = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 doneButton.setVisible(true);
@@ -239,12 +239,10 @@ public class GUI extends Application {
                 anchorPane.getChildren().addAll(checkComboBox,generateButton);
             }
         };
-        listPlayersButton.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandlerList);
-        listPlayersButton.setOnAction(event2 -> listPlayerscene(anchorPane));
+        listPlayersButton.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandlerList);*/
+        listPlayersButton.setOnAction(event2 -> listPlayerscene());
 
         anchorPane.getChildren().addAll(listPlayersButton, addPlayerButton,deletePlayerButton,updatePlayerButton,mainMenuButton,doneButton);
-        anchorPane.getChildren().retainAll(listPlayersButton, addPlayerButton,deletePlayerButton,updatePlayerButton,mainMenuButton,doneButton);
-
 
 
         Scene playerScene = new Scene(anchorPane, 900, 600);
@@ -254,21 +252,11 @@ public class GUI extends Application {
 
     }
 
-    public void listPlayerscene(AnchorPane anchorPane){
-
+    public void listPlayerscene(){
+        AnchorPane anchorPane = new AnchorPane();
 
         Button listPlayersButton = new Button("List players");
         setButtonLayout(listPlayersButton,1,150);
-
-
-        Button addPlayerButton = new Button("Add player");
-        setButtonLayout(addPlayerButton,2,150);
-
-        Button deletePlayerButton = new Button("Delete player");
-        setButtonLayout(deletePlayerButton,3,150);
-
-        Button updatePlayerButton = new Button("Update player");
-        setButtonLayout(updatePlayerButton,4,150);
 
         Button mainMenuButton = new Button("Main menu");
         setButtonLayout(mainMenuButton,6,150);
@@ -277,67 +265,52 @@ public class GUI extends Application {
 
         Button doneButton = new Button("Done");
         setButtonLayout(doneButton,6,150);
-        doneButton.setVisible(false);
         doneButton.setOnAction(event -> playerScene());
 
-
-        EventHandler<MouseEvent> eventHandlerList = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                doneButton.setVisible(true);
-                addPlayerButton.setVisible(false);
-                deletePlayerButton.setVisible(false);
-                updatePlayerButton.setVisible(false);
-
-                Button generateButton = new Button("Generate");
-                setButtonLayout(generateButton,4,150);
+        Button generateButton = new Button("Generate");
+        setButtonLayout(generateButton,4,150);
 
 
 
 
-                final CheckComboBox<DisplayItem> checkComboBox = new CheckComboBox<>();
-                checkComboBox.getItems().addAll(
-                        new DisplayItem("ID", "id", Integer.class),
-                        new DisplayItem("First name", "firstName", String.class),
-                        new DisplayItem("Last name", "lastName",String.class),
-                        new DisplayItem("Nickname", "nickname",String.class),
-                        new DisplayItem("E-mail", "email",String.class),
-                        new DisplayItem("Phone number", "phonenumber",Long.class),
-                        new DisplayItem("Street adress", "streetAdress",String.class),
-                        new DisplayItem("Postal code", "postalCode",String.class),
-                        new DisplayItem("City", "city",String.class),
-                        new DisplayItem("Country", "country",String.class)
+        final CheckComboBox<DisplayItem> checkComboBox = new CheckComboBox<>();
+        checkComboBox.getItems().addAll(
+                new DisplayItem("ID", "id", Integer.class),
+                new DisplayItem("First name", "firstName", String.class),
+                new DisplayItem("Last name", "lastName",String.class),
+                new DisplayItem("Nickname", "nickname",String.class),
+                new DisplayItem("E-mail", "email",String.class),
+                new DisplayItem("Phone number", "phonenumber",Long.class),
+                new DisplayItem("Street adress", "streetAdress",String.class),
+                new DisplayItem("Postal code", "postalCode",String.class),
+                new DisplayItem("City", "city",String.class),
+                new DisplayItem("Country", "country",String.class)
                 );
 
 
-                checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<DisplayItem>() {
-                    @Override
-                    public void onChanged(Change<? extends DisplayItem> change) {
-                        if(change.getList().size() == 0){
-                            checkComboBox.getCheckModel().clearChecks();
+        checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<DisplayItem>() {
+            @Override
+            public void onChanged(Change<? extends DisplayItem> change) {
+                if(change.getList().size() == 0){
+                    checkComboBox.getCheckModel().clearChecks();
 
-                        }
+                }
 
-                    }
-                });
-
-
-
-                checkComboBox.setTitle("Choose columns");
-                checkComboBox.setStyle("-fx-font-size: 18;");
-                checkComboBox.setLayoutY(150);
-                checkComboBox.setLayoutX(350);
-                checkComboBox.setPrefWidth(200);
-
-                generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox));
-
-                anchorPane.getChildren().addAll(checkComboBox,generateButton);
             }
-        };
-        listPlayersButton.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandlerList);
+        });
 
 
-        Scene listPlayerscene = new Scene(anchorPane);
+        checkComboBox.setTitle("Choose columns");
+        checkComboBox.setStyle("-fx-font-size: 18;");
+        checkComboBox.setLayoutY(150);
+        checkComboBox.setLayoutX(350);
+        checkComboBox.setPrefWidth(200);
+
+        generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox));
+
+
+        anchorPane.getChildren().addAll(listPlayersButton,mainMenuButton,doneButton,checkComboBox,generateButton);
+        Scene listPlayerscene = new Scene(anchorPane, 900, 600);
         primaryStage.setScene(listPlayerscene);
         primaryStage.show();
     }
