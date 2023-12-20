@@ -9,10 +9,10 @@ INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_a
 
 
              --Data for Teams //Abenezer
-INSERT INTO team (team_id, team_name) VALUES (1, 'Team Alpha');
-INSERT INTO team (team_id, team_name) VALUES (2, 'Team Beta');
-INSERT INTO team (team_id, team_name) VALUES (3, 'Team Gamma');
-INSERT INTO team (team_id, team_name) VALUES (4, 'Team Delta');
-INSERT INTO team (team_id, team_name) VALUES (5, 'Team Epsilon');
+INSERT INTO team (team_name) VALUES ('Team Alpha');
+INSERT INTO team (team_name) VALUES ('Team Beta');
+INSERT INTO team (team_name) VALUES ('Team Gamma');
+INSERT INTO team (team_name) VALUES ('Team Delta');
+INSERT INTO team (team_name) VALUES ('Team Epsilon');
 
 
