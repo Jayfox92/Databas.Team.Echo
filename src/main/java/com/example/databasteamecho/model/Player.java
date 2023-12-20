@@ -25,7 +25,7 @@ public class Player {
     @Column(name = "street_adress", length = 40)
     private String streetAdress;
     @Column(name = "postal_code", length = 15)
-    private int postalCode;
+    private String postalCode;
     @Column(name = "city", length = 30)
     private String city;
     @Column(name = "country", length = 30)
@@ -43,7 +43,7 @@ public class Player {
     private Set<Game> player_gameList = new HashSet<>();
     public Player (){}
 
-    public Player(int id, String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, int postalCode, String city, String country) {
+    public Player(int id, String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, String postalCode, String city, String country) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -56,7 +56,7 @@ public class Player {
         this.country = country;
     }
 
-    public Player(String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, int postalCode, String city, String country) {
+    public Player(String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, String postalCode, String city, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.nickname = nickname;
@@ -124,11 +124,11 @@ public class Player {
         this.streetAdress = streetAdress;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
