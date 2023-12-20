@@ -127,6 +127,7 @@ public class GUI extends Application {
 
 
         Button teamButton = new Button("Manage teams");
+        teamButton.setOnAction(event -> teamScene()); //Abenezer
         setButtonLayout(teamButton, 2,150);
 
 
@@ -348,6 +349,39 @@ public class GUI extends Application {
         return column;
     }
 
+    public void teamScene(){ //Abenezer
+        AnchorPane anchorPane = new AnchorPane();
+
+        Button listTeamsButton = new Button("List teams");
+        setButtonLayout(listTeamsButton,1,150);
+
+
+        Button addTeamButton = new Button("Add team");
+        setButtonLayout(addTeamButton,2,150);
+
+        Button deleteTeamButton = new Button("Delete team");
+        setButtonLayout(deleteTeamButton,3,150);
+
+        Button updateTeamButton = new Button("Update team");
+        setButtonLayout(updateTeamButton,4,150);
+
+        Button mainMenuButton = new Button("Main menu");
+        setButtonLayout(mainMenuButton,6,150);
+        mainMenuButton.setLayoutX(125);
+        mainMenuButton.setOnAction(event -> firstScene());
+
+        Button doneButton = new Button("Done");
+        setButtonLayout(doneButton,6,150);
+        doneButton.setVisible(false);
+        doneButton.setOnAction(event -> teamScene());
+
+        anchorPane.getChildren().addAll(listTeamsButton,addTeamButton,deleteTeamButton,updateTeamButton,mainMenuButton,doneButton);
+        Scene teamScene = new Scene(anchorPane, 900, 600);
+        primaryStage.setScene(teamScene);
+        primaryStage.show();
+
+
+    }
 
 
 }
