@@ -2,31 +2,161 @@ package com.example.databasteamecho.view;
 
 import com.example.databasteamecho.controller.PlayerController;
 import com.example.databasteamecho.model.Player;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.controlsfx.control.CheckComboBox;
 
 import java.util.List;
 
 public class ManagePlayer {
 
-    Stage primaryStage;
-    PlayerController playerController;
-    GUI gui = new GUI();
-    public ManagePlayer(Stage primaryStage,PlayerController playerController) {
+    private Stage primaryStage;
+    private PlayerController playerController;
+    private GUI gui = new GUI();
+    private Runnable guiCallback;
+    public ManagePlayer(Stage primaryStage,Runnable guiCallback,PlayerController playerController) {
         this.primaryStage = primaryStage;
+        this.guiCallback = guiCallback;
         this.playerController = playerController;
+    }
+
+    public void playerScene(){
+        AnchorPane anchorPane = new AnchorPane();
+
+        Button listPlayersButton = new Button("List players");
+        gui.setButtonLayout(listPlayersButton,1,150);
+        gui.setColors(listPlayersButton,1);
+        listPlayersButton.setOnAction(event -> listPlayerscene());
+
+        Button addPlayerButton = new Button("Add player");
+        gui.setButtonLayout(addPlayerButton,2,150);
+        gui.setColors(addPlayerButton,2);
+        addPlayerButton.setOnAction(event -> addPlayerScene());
+
+        Button deletePlayerButton = new Button("Delete player");
+        gui.setButtonLayout(deletePlayerButton,3,150);
+        gui.setColors(deletePlayerButton,3);
+
+        Button updatePlayerButton = new Button("Update player");
+        gui.setButtonLayout(updatePlayerButton,4,150);
+        gui.setColors(updatePlayerButton,4);
+
+        Button mainMenuButton = new Button("Main menu");
+        gui.setButtonLayout(mainMenuButton,6,150);
+        gui.setColors(mainMenuButton,6);
+        mainMenuButton.setLayoutX(125);
+        mainMenuButton.setOnAction(event -> guiCallback.run());
+
+
+
+
+
+
+
+        anchorPane.getChildren().addAll(listPlayersButton, addPlayerButton,deletePlayerButton,updatePlayerButton,mainMenuButton);
+
+
+        Scene playerScene = new Scene(anchorPane, 900, 600);
+        primaryStage.setScene(playerScene);
+        primaryStage.show();
+
+
+    }
+
+    public void listPlayerscene(){
+        AnchorPane anchorPane = new AnchorPane();
+
+        Button listPlayersButton = new Button("List players");
+        gui.setButtonLayout(listPlayersButton,7,150);
+        gui.setColors(listPlayersButton,1);
+
+        Button mainMenuButton = new Button("Main menu");
+        gui.setButtonLayout(mainMenuButton,6,150);
+        gui.setColors(mainMenuButton,6);
+        mainMenuButton.setLayoutX(125);
+        mainMenuButton.setOnAction(event -> guiCallback.run());
+
+        Button doneButton = new Button("Back");
+        gui.setButtonLayout(doneButton,6,150);
+        gui.setColors(doneButton,6);
+        doneButton.setLayoutX(300);
+        doneButton.setOnAction(event -> playerScene());
+
+        Button deletePlayerButton = new Button("Delete player");
+        gui.setButtonLayout(deletePlayerButton,6,150);
+        deletePlayerButton.setLayoutX(475);
+        gui.setColors(deletePlayerButton,3);
+        deletePlayerButton.setOnAction(event -> deletePlayer(anchorPane));
+
+        Button updatePlayerButton = new Button("Update player");
+        gui.setButtonLayout(updatePlayerButton,6,150);
+        updatePlayerButton.setLayoutX(650);
+        gui.setColors(updatePlayerButton,4);
+
+        Button generateButton = new Button("Generate");
+        gui.setButtonLayout(generateButton,10,150);
+        gui.setColors(generateButton,4);
+
+
+
+
+        final CheckComboBox<DisplayItem> checkComboBox = new CheckComboBox<>();
+        checkComboBox.getItems().addAll(
+                new DisplayItem("ID", "id", Integer.class),
+                new DisplayItem("First name", "firstName", String.class),
+                new DisplayItem("Last name", "lastName",String.class),
+                new DisplayItem("Nickname", "nickname",String.class),
+                new DisplayItem("E-mail", "email",String.class),
+                new DisplayItem("Phone number", "phonenumber",Long.class),
+                new DisplayItem("Street adress", "streetAdress",String.class),
+                new DisplayItem("Postal code", "postalCode",String.class),
+                new DisplayItem("City", "city",String.class),
+                new DisplayItem("Country", "country",String.class)
+        );
+
+
+        checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<DisplayItem>() {
+            @Override
+            public void onChanged(Change<? extends DisplayItem> change) {
+                if(change.getList().size() == 0){
+                    checkComboBox.getCheckModel().clearChecks();
+
+                }
+
+            }
+        });
+
+
+        checkComboBox.setTitle("Choose columns");
+        checkComboBox.setStyle("-fx-font-size: 18;");
+        checkComboBox.setLayoutY(50);
+        checkComboBox.setLayoutX(350);
+        checkComboBox.setPrefWidth(200);
+
+
+        generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox));
+
+
+        anchorPane.getChildren().addAll(listPlayersButton,mainMenuButton,doneButton,checkComboBox,generateButton,deletePlayerButton,updatePlayerButton);
+        Scene listPlayerscene = new Scene(anchorPane, 900, 600);
+        primaryStage.setScene(listPlayerscene);
+        primaryStage.show();
     }
 
     public void addPlayerScene() {
@@ -47,15 +177,15 @@ public class ManagePlayer {
         gui.setButtonLayout(mainMenuButton,6,150);
         gui.setColors(mainMenuButton,6);
         mainMenuButton.setLayoutX(125);
-        mainMenuButton.setOnAction(event -> gui.firstScene());
+        mainMenuButton.setOnAction(event -> guiCallback.run());
 
-        Button doneButton = new Button("Done");
+        Button doneButton = new Button("Back");
         gui.setButtonLayout(doneButton,6,150);
         gui.setColors(doneButton,6);
-        doneButton.setOnAction(event -> gui.playerScene());
+        doneButton.setOnAction(event -> playerScene());
 
 
-        //entire event for create new player, ends @ row 422
+
         EventHandler<MouseEvent> eventHandler = event -> {
             Text text = new Text("Note that first name, last name and nickname is required");
             text.setLayoutY(275);
@@ -165,7 +295,7 @@ public class ManagePlayer {
 
 
             anchorPane.getChildren().addAll(text,vbox,vbox2,saveButton);
-        }; //event ends here for create player
+        };
 
         createButton.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
 
@@ -195,9 +325,12 @@ public class ManagePlayer {
 
 
         tableView.setLayoutX(50);
-        tableView.setLayoutY(225);
-        tableView.setPrefHeight(playerList.size()*30);
+        tableView.setLayoutY(100);
+        tableView.setPrefHeight(playerList.size()*35);
         tableView.setPrefWidth(displayList.size()*100);
+        tableView.setMinHeight(100);
+        tableView.setMaxHeight(350);
+        tableView.setMaxWidth(800);
 
         anchorPane.getChildren().addAll(tableView);
 
@@ -206,8 +339,45 @@ public class ManagePlayer {
         TableColumn<E, T> column = new TableColumn<>(label);
 
         column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-        column.setEditable(true);
 
         return column;
     }
+
+    public void deletePlayer(AnchorPane anchorPane){
+        TextField deleteText = new TextField();
+        deleteText.setPromptText("Enter ID to delete");
+        deleteText.setLayoutX(475);
+        deleteText.setLayoutY(450);
+        deleteText.setPrefWidth(120);
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+
+        EventHandler<KeyEvent> eventHandler = event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                try {
+                    int id = Integer.parseInt(deleteText.getText());
+                    if (playerController.deletePlayer(id)) {
+                        Text textsuccess = new Text("Successfully deleted");
+                        textsuccess.setLayoutX(475);
+                        textsuccess.setLayoutY(435);
+                        anchorPane.getChildren().addAll(textsuccess);
+                        pause.setOnFinished(e -> anchorPane.getChildren().removeAll(textsuccess));
+                        pause.playFromStart();
+
+                    } else {
+                        Text textfail = new Text("Failed to delete");
+                        textfail.setLayoutX(475);
+                        textfail.setLayoutY(435);
+                        anchorPane.getChildren().addAll(textfail);
+                        pause.setOnFinished(e -> anchorPane.getChildren().removeAll(textfail));
+                        pause.playFromStart();
+
+                    }
+                } catch (Exception ignored) {}
+            }
+        };
+
+        deleteText.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
+        anchorPane.getChildren().add(deleteText);
+    }
+
 }
