@@ -1,7 +1,13 @@
 package com.example.databasteamecho.view;
 
+import com.example.databasteamecho.controller.GameController;
+import com.example.databasteamecho.controller.MatchesController;
 import com.example.databasteamecho.controller.PlayerController;
+import com.example.databasteamecho.controller.TeamController;
+import com.example.databasteamecho.model.Game;
+import com.example.databasteamecho.model.Matches;
 import com.example.databasteamecho.model.Player;
+import com.example.databasteamecho.model.Team;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -18,14 +24,21 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import org.controlsfx.control.CheckComboBox;
 
 
 public class GUI extends Application {
     private Stage primaryStage;
+    GameController gameController;
+    MatchesController matchesController;
     PlayerController playerController;
+    TeamController teamController;
+    ManagePlayer managePlayer;
 
     public static void main(String[] args) {
 
@@ -36,7 +49,14 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
     this.primaryStage = primaryStage;
+    this.gameController = new GameController();
+    this.matchesController = new MatchesController();
     this.playerController = new PlayerController();
+    this.teamController = new TeamController();
+
+
+    this.managePlayer = new ManagePlayer(primaryStage,playerController);
+
 
     firstScene();
     }
@@ -185,7 +205,7 @@ public class GUI extends Application {
         Button addPlayerButton = new Button("Add player");
         setButtonLayout(addPlayerButton,2,150);
         setColors(addPlayerButton,2);
-        addPlayerButton.setOnAction(event -> addPlayerScene());
+        addPlayerButton.setOnAction(event -> managePlayer.addPlayerScene());
 
         Button deletePlayerButton = new Button("Delete player");
         setButtonLayout(deletePlayerButton,3,150);
@@ -309,7 +329,7 @@ public class GUI extends Application {
         doneButton.setOnAction(event -> playerScene());
 
 
-
+        //entire event for create new player, ends @ row 422
         EventHandler<MouseEvent> eventHandler = event -> {
             Text text = new Text("Note that first name, last name and nickname is required");
             text.setLayoutY(275);
@@ -419,7 +439,7 @@ public class GUI extends Application {
 
 
             anchorPane.getChildren().addAll(text,vbox,vbox2,saveButton);
-        };
+        }; //event ends here for create player
 
         createButton.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
 

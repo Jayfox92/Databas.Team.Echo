@@ -30,6 +30,7 @@ public class Team {
     @ManyToMany(mappedBy = "matches_ListOfTeams")
     private Set<Matches> team_ListOfMatches = new HashSet<>();
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "players_in_team")
     private Player player;
 
 
