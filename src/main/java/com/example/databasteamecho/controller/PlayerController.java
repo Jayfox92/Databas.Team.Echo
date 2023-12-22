@@ -11,7 +11,7 @@ public class PlayerController {
 
     public static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("hibernate");
 
-    public List<Player> getAll(boolean printOut){//lista samtliga players
+    public List<Player> getAll(boolean printOut){
         EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         List<Player> playerListToReturn = new ArrayList<>();
@@ -49,6 +49,27 @@ public class PlayerController {
             transaction = entityManager.getTransaction();
             transaction.begin();
             entityManager.persist(player);
+            transaction.commit();
+            return true;
+        } catch (Exception e){
+            if(transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return false;
+    }
+
+    public boolean deletePlayer(int id){
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            Player playerToDelete = entityManager.find(Player.class, id);
+            entityManager.remove(entityManager.contains(playerToDelete) ? playerToDelete : entityManager.merge(playerToDelete));
             transaction.commit();
             return true;
         } catch (Exception e){

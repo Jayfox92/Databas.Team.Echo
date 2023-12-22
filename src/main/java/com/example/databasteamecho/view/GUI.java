@@ -1,7 +1,13 @@
 package com.example.databasteamecho.view;
 
+import com.example.databasteamecho.controller.GameController;
+import com.example.databasteamecho.controller.MatchesController;
 import com.example.databasteamecho.controller.PlayerController;
+import com.example.databasteamecho.controller.TeamController;
+import com.example.databasteamecho.model.Game;
+import com.example.databasteamecho.model.Matches;
 import com.example.databasteamecho.model.Player;
+import com.example.databasteamecho.model.Team;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -18,14 +24,21 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import org.controlsfx.control.CheckComboBox;
 
 
 public class GUI extends Application {
     private Stage primaryStage;
+    GameController gameController;
+    MatchesController matchesController;
     PlayerController playerController;
+    TeamController teamController;
+    ManagePlayer managePlayer;
 
     public static void main(String[] args) {
 
@@ -36,7 +49,14 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
     this.primaryStage = primaryStage;
+    this.gameController = new GameController();
+    this.matchesController = new MatchesController();
     this.playerController = new PlayerController();
+    this.teamController = new TeamController();
+
+
+    this.managePlayer = new ManagePlayer(primaryStage,this::firstScene,playerController);
+
 
     firstScene();
     }
@@ -75,8 +95,28 @@ public class GUI extends Application {
                 button.setLayoutY(500);
                 button.setLayoutX(380);
                 break;
+            case 7:
+                button.setPrefWidth(150);
+                button.setLayoutY(50);
+                button.setLayoutX(125);
+                break;
+            case 8:
+                button.setPrefWidth(150);
+                button.setLayoutY(50);
+                button.setLayoutX(300);
+                break;
+            case 9:
+                button.setPrefWidth(150);
+                button.setLayoutY(50);
+                button.setLayoutX(475);
+                break;
+            case 10:
+                button.setPrefWidth(150);
+                button.setLayoutY(50);
+                button.setLayoutX(650);
             default:
                 break;
+
         }
     }
 
@@ -134,7 +174,7 @@ public class GUI extends Application {
         welcomeText.setStyle("-fx-fill: darkviolet; -fx-font-size: 36; -fz-font-weight: bold; -fx-font-style: italic;");
 
         Button playerButton = new Button("Manage players");
-        playerButton.setOnAction(event -> playerScene());
+        playerButton.setOnAction(event -> managePlayer.playerScene());
         setButtonLayout(playerButton, 1, 150);
         setColors(playerButton,1);
 
@@ -174,296 +214,6 @@ public class GUI extends Application {
 
     }
 
-    public void playerScene(){
-        AnchorPane anchorPane = new AnchorPane();
-
-        Button listPlayersButton = new Button("List players");
-        setButtonLayout(listPlayersButton,1,150);
-        setColors(listPlayersButton,1);
-        listPlayersButton.setOnAction(event -> listPlayerscene());
-
-        Button addPlayerButton = new Button("Add player");
-        setButtonLayout(addPlayerButton,2,150);
-        setColors(addPlayerButton,2);
-        addPlayerButton.setOnAction(event -> addPlayerScene());
-
-        Button deletePlayerButton = new Button("Delete player");
-        setButtonLayout(deletePlayerButton,3,150);
-        setColors(deletePlayerButton,3);
-
-        Button updatePlayerButton = new Button("Update player");
-        setButtonLayout(updatePlayerButton,4,150);
-        setColors(updatePlayerButton,4);
-
-        Button mainMenuButton = new Button("Main menu");
-        setButtonLayout(mainMenuButton,6,150);
-        setColors(mainMenuButton,6);
-        mainMenuButton.setLayoutX(125);
-        mainMenuButton.setOnAction(event -> firstScene());
-
-
-
-
-
-
-
-        anchorPane.getChildren().addAll(listPlayersButton, addPlayerButton,deletePlayerButton,updatePlayerButton,mainMenuButton);
-
-
-        Scene playerScene = new Scene(anchorPane, 900, 600);
-        primaryStage.setScene(playerScene);
-        primaryStage.show();
-
-
-    }
-
-    public void listPlayerscene(){
-        AnchorPane anchorPane = new AnchorPane();
-
-        Button listPlayersButton = new Button("List players");
-        setButtonLayout(listPlayersButton,1,150);
-        setColors(listPlayersButton,1);
-
-        Button mainMenuButton = new Button("Main menu");
-        setButtonLayout(mainMenuButton,6,150);
-        setColors(mainMenuButton,6);
-        mainMenuButton.setLayoutX(125);
-        mainMenuButton.setOnAction(event -> firstScene());
-
-        Button doneButton = new Button("Done");
-        setButtonLayout(doneButton,6,150);
-        setColors(doneButton,6);
-        doneButton.setOnAction(event -> playerScene());
-
-        Button generateButton = new Button("Generate");
-        setButtonLayout(generateButton,4,150);
-        setColors(generateButton,4);
-
-
-
-
-        final CheckComboBox<DisplayItem> checkComboBox = new CheckComboBox<>();
-        checkComboBox.getItems().addAll(
-                new DisplayItem("ID", "id", Integer.class),
-                new DisplayItem("First name", "firstName", String.class),
-                new DisplayItem("Last name", "lastName",String.class),
-                new DisplayItem("Nickname", "nickname",String.class),
-                new DisplayItem("E-mail", "email",String.class),
-                new DisplayItem("Phone number", "phonenumber",Long.class),
-                new DisplayItem("Street adress", "streetAdress",String.class),
-                new DisplayItem("Postal code", "postalCode",String.class),
-                new DisplayItem("City", "city",String.class),
-                new DisplayItem("Country", "country",String.class)
-                );
-
-
-        checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<DisplayItem>() {
-            @Override
-            public void onChanged(Change<? extends DisplayItem> change) {
-                if(change.getList().size() == 0){
-                    checkComboBox.getCheckModel().clearChecks();
-
-                }
-
-            }
-        });
-
-
-        checkComboBox.setTitle("Choose columns");
-        checkComboBox.setStyle("-fx-font-size: 18;");
-        checkComboBox.setLayoutY(150);
-        checkComboBox.setLayoutX(350);
-        checkComboBox.setPrefWidth(200);
-
-        generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox));
-
-
-        anchorPane.getChildren().addAll(listPlayersButton,mainMenuButton,doneButton,checkComboBox,generateButton);
-        Scene listPlayerscene = new Scene(anchorPane, 900, 600);
-        primaryStage.setScene(listPlayerscene);
-        primaryStage.show();
-    }
-
-    public void addPlayerScene(){
-        AnchorPane anchorPane = new AnchorPane();
-
-        Button addPlayerButton = new Button("Add player");
-        setButtonLayout(addPlayerButton,1,150);
-        setColors(addPlayerButton,2);
-
-        Button createButton = new Button("Create new\n player");
-        setButtonLayout(createButton,4,150);
-        setColors(createButton,4);
-        createButton.setPrefHeight(65);
-
-
-        Button mainMenuButton = new Button("Main menu");
-        setButtonLayout(mainMenuButton,6,150);
-        setColors(mainMenuButton,6);
-        mainMenuButton.setLayoutX(125);
-        mainMenuButton.setOnAction(event -> firstScene());
-
-        Button doneButton = new Button("Done");
-        setButtonLayout(doneButton,6,150);
-        setColors(doneButton,6);
-        doneButton.setOnAction(event -> playerScene());
-
-
-
-        EventHandler<MouseEvent> eventHandler = event -> {
-            Text text = new Text("Note that first name, last name and nickname is required");
-            text.setLayoutY(275);
-            text.setLayoutX(300);
-            setColors(text,3);
-            VBox vbox = new VBox(10);
-            vbox.setLayoutX(150);
-            vbox.setLayoutY(325);
-
-
-
-            HBox firstNameBox = new HBox(5);
-            Label firstNameLabel = new Label("First name");
-            firstNameLabel.setMinWidth(65);
-            TextField firstNameField = new TextField();
-            firstNameBox.getChildren().addAll(firstNameLabel,firstNameField);
-
-            HBox lastNameBox = new HBox(5);
-            Label lastNameLabel = new Label("Last name");
-            lastNameLabel.setMinWidth(65);
-            TextField lastNameField = new TextField();
-            lastNameBox.getChildren().addAll(lastNameLabel,lastNameField);
-
-            HBox nicknameBox = new HBox(5);
-            Label nicknameLabel = new Label("Nickname");
-            nicknameLabel.setMinWidth(65);
-            TextField nicknameField = new TextField();
-            nicknameBox.getChildren().addAll(nicknameLabel,nicknameField);
-
-            HBox emailBox = new HBox(5);
-            Label emailLabel = new Label("E-mail");
-            emailLabel.setMinWidth(65);
-            TextField emailField = new TextField();
-            emailBox.getChildren().addAll(emailLabel,emailField);
-
-            VBox vbox2 = new VBox(10);
-            vbox2.setLayoutX(475);
-            vbox2.setLayoutY(325);
-
-            HBox phoneNumberBox = new HBox(5);
-            Label phoneNumberLabel = new Label("Phone number");
-            phoneNumberLabel.setMinWidth(75);
-            TextField phoneNumberField = new TextField();
-            phoneNumberBox.getChildren().addAll(phoneNumberLabel,phoneNumberField);
-
-            HBox streetAdressBox = new HBox(5);
-            Label streetAdressLabel = new Label("Street adress");
-            streetAdressLabel.setMinWidth(75);
-            TextField streetAdressField = new TextField();
-            streetAdressBox.getChildren().addAll(streetAdressLabel,streetAdressField);
-
-            HBox postalCodeBox = new HBox(5);
-            Label postalCodeLabel = new Label("Postal code");
-            postalCodeLabel.setMinWidth(75);
-            TextField postalCodeField = new TextField();
-            postalCodeBox.getChildren().addAll(postalCodeLabel,postalCodeField);
-
-            HBox cityBox = new HBox(5);
-            Label cityLabel = new Label("City");
-            cityLabel.setMinWidth(75);
-            TextField cityField = new TextField();
-            cityBox.getChildren().addAll(cityLabel,cityField);
-
-            HBox countryBox = new HBox(5);
-            Label countryLabel = new Label("Country");
-            countryLabel.setMinWidth(75);
-            TextField countryField = new TextField();
-            countryBox.getChildren().addAll(countryLabel,countryField);
-
-
-
-            vbox.getChildren().addAll(firstNameBox,lastNameBox,nicknameBox,emailBox);
-            vbox2.getChildren().addAll(phoneNumberBox,streetAdressBox,postalCodeBox,cityBox,countryBox);
-
-            Button saveButton = new Button("Save");
-            saveButton.setLayoutX(750);
-            saveButton.setLayoutY(375);
-            saveButton.setOnAction(event1 -> {
-
-                        Node lastChild = anchorPane.getChildren().get(anchorPane.getChildren().size() - 1);
-                        if (lastChild instanceof Text) {
-                            anchorPane.getChildren().remove(lastChild);
-                        }
-
-                        if(!firstNameField.getText().isEmpty()&&!lastNameField.getText().isEmpty()&&!nicknameField.getText().isEmpty()){Player player = new Player
-                        (
-                                firstNameField.getText(),lastNameField.getText(),
-                                nicknameField.getText(), emailField.getText(), phoneNumberField.getText(),
-                                streetAdressField.getText(),postalCodeField.getText(),cityField.getText(),
-                                countryField.getText()
-                        );
-                    try{
-                    playerController.addPlayer(player);
-                    Text textsuccess = new Text("Successfully added "+player.getNickname());
-                    textsuccess.setLayoutX(720);
-                    textsuccess.setLayoutY(420);
-                    anchorPane.getChildren().addAll(textsuccess);
-                    }catch (Exception ignored){}
-            }else {
-                        Text textfail = new Text("Failed to add player\nMake sure required fields\n are filled out\n and that your inputs \naren't too long \n(rule of thumb 30 characters)");
-                        textfail.setLayoutX(720);
-                        textfail.setLayoutY(420);
-                        anchorPane.getChildren().addAll(textfail);
-            };
-            }
-            );
-
-
-            anchorPane.getChildren().addAll(text,vbox,vbox2,saveButton);
-        };
-
-        createButton.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
-
-
-        anchorPane.getChildren().addAll(addPlayerButton,createButton,mainMenuButton,doneButton);
-
-        Scene addPlayerScene = new Scene(anchorPane, 900, 600);
-        primaryStage.setScene(addPlayerScene);
-        primaryStage.show();
-
-    }
-
-    public void generatePlayerList(AnchorPane anchorPane, CheckComboBox checkComboBox)  {
-        anchorPane.getChildren().removeIf(node -> node instanceof TableView);
-        TableView<Player> tableView = new TableView<>();
-        ObservableList<DisplayItem> displayList = checkComboBox.getCheckModel().getCheckedItems();
-        for(DisplayItem displayItem:displayList){
-            tableView.getColumns().add(createTableColumn(displayItem.getLabel(), displayItem.getValue(), displayItem.getType()));
-        }
-
-        List<Player> playerList = playerController.getAll(false);
-
-        ObservableList<Player> observableList = FXCollections.observableList(playerList);
-
-        tableView.setItems(observableList);
-
-
-
-        tableView.setLayoutX(50);
-        tableView.setLayoutY(225);
-        tableView.setPrefHeight(playerList.size()*30);
-        tableView.setPrefWidth(displayList.size()*100);
-
-        anchorPane.getChildren().addAll(tableView);
-
-    }
-    private <E,T> TableColumn<E, T> createTableColumn(String label,String propertyName,Class<T> type) {
-        TableColumn<E, T> column = new TableColumn<>(label);
-
-        column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-        column.setEditable(true);
-
-        return column;
-    }
 
 
 

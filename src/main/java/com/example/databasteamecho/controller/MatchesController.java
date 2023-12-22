@@ -4,7 +4,6 @@ import com.example.databasteamecho.model.Player;
 
 import java.util.List;
 
-public class GameController {
-
+public class MatchesController {
     public List<Player> getAll(boolean printOut){return null;}
 }
