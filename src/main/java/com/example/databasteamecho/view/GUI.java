@@ -3,22 +3,14 @@ package com.example.databasteamecho.view;
 import com.example.databasteamecho.controller.PlayerController;
 import com.example.databasteamecho.model.Player;
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.binding.NumberBinding;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.skin.ComboBoxPopupControl;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -26,21 +18,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.controlsfx.control.CheckComboBox;
-
-import javax.persistence.Entity;
 
 
 public class GUI extends Application {
     private Stage primaryStage;
     PlayerController playerController;
-
-    private ManageTeams manageTeams;
 
     public static void main(String[] args) {
 
@@ -155,10 +140,6 @@ public class GUI extends Application {
 
 
         Button teamButton = new Button("Manage teams");
-        teamButton.setOnAction(event -> {
-            ManageTeams manageTeams = new ManageTeams(primaryStage, this::firstScene,this); // Pass a reference to firstScene
-            manageTeams.teamScene();
-        });
         setButtonLayout(teamButton, 2,150);
         setColors(teamButton,2);
 
@@ -406,12 +387,33 @@ public class GUI extends Application {
             Button saveButton = new Button("Save");
             saveButton.setLayoutX(750);
             saveButton.setLayoutY(375);
-            saveButton.setOnAction(event1 -> {Player player = new Player(firstNameField.getText(),lastNameField.getText(),
-                    nicknameField.getText(), emailField.getText(), phoneNumberField.getText(),
-                    streetAdressField.getText(),postalCodeField.getText(),cityField.getText(),
-                    countryField.getText()
-                    );
-                playerController.addPlayer(player);
+            saveButton.setOnAction(event1 -> {
+
+                        Node lastChild = anchorPane.getChildren().get(anchorPane.getChildren().size() - 1);
+                        if (lastChild instanceof Text) {
+                            anchorPane.getChildren().remove(lastChild);
+                        }
+
+                        if(!firstNameField.getText().isEmpty()&&!lastNameField.getText().isEmpty()&&!nicknameField.getText().isEmpty()){Player player = new Player
+                        (
+                                firstNameField.getText(),lastNameField.getText(),
+                                nicknameField.getText(), emailField.getText(), phoneNumberField.getText(),
+                                streetAdressField.getText(),postalCodeField.getText(),cityField.getText(),
+                                countryField.getText()
+                        );
+                    try{
+                    playerController.addPlayer(player);
+                    Text textsuccess = new Text("Successfully added "+player.getNickname());
+                    textsuccess.setLayoutX(720);
+                    textsuccess.setLayoutY(420);
+                    anchorPane.getChildren().addAll(textsuccess);
+                    }catch (Exception ignored){}
+            }else {
+                        Text textfail = new Text("Failed to add player\nMake sure required fields\n are filled out\n and that your inputs \naren't too long \n(rule of thumb 30 characters)");
+                        textfail.setLayoutX(720);
+                        textfail.setLayoutY(420);
+                        anchorPane.getChildren().addAll(textfail);
+            };
             }
             );
 

@@ -24,7 +24,7 @@ public class Player {
     private String phonenumber;
     @Column(name = "street_adress", length = 40)
     private String streetAdress;
-    @Column(name = "postal_code", length = 15)
+    @Column(name = "postal_code", length = 25)
     private String postalCode;
     @Column(name = "city", length = 30)
     private String city;
