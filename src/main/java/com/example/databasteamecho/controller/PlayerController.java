@@ -83,6 +83,24 @@ public class PlayerController {
         return false;
     }
 
+    public void updatePlayer(Player player){
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            entityManager.merge(player);
+            transaction.commit();
+        } catch (Exception e){
+            if(transaction!= null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+    }
+
 
 
 }

@@ -30,6 +30,7 @@ public class ManagePlayer {
     private PlayerController playerController;
     private GUI gui = new GUI();
     private Runnable guiCallback;
+    private PauseTransition pause = new PauseTransition(Duration.seconds(3));
     public ManagePlayer(Stage primaryStage,Runnable guiCallback,PlayerController playerController) {
         this.primaryStage = primaryStage;
         this.guiCallback = guiCallback;
@@ -108,6 +109,8 @@ public class ManagePlayer {
         gui.setButtonLayout(updatePlayerButton,6,150);
         updatePlayerButton.setLayoutX(650);
         gui.setColors(updatePlayerButton,4);
+        updatePlayerButton.setVisible(false);
+
 
         Button generateButton = new Button("Generate");
         gui.setButtonLayout(generateButton,10,150);
@@ -150,7 +153,7 @@ public class ManagePlayer {
         checkComboBox.setPrefWidth(200);
 
 
-        generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox));
+        generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox, updatePlayerButton));
 
 
         anchorPane.getChildren().addAll(listPlayersButton,mainMenuButton,doneButton,checkComboBox,generateButton,deletePlayerButton,updatePlayerButton);
@@ -164,11 +167,11 @@ public class ManagePlayer {
 
 
         Button addPlayerButton = new Button("Add player");
-        gui.setButtonLayout(addPlayerButton,1,150);
+        gui.setButtonLayout(addPlayerButton,7,150);
         gui.setColors(addPlayerButton,2);
 
         Button createButton = new Button("Create new\n player");
-        gui.setButtonLayout(createButton,4,150);
+        gui.setButtonLayout(createButton,10,150);
         gui.setColors(createButton,4);
         createButton.setPrefHeight(65);
 
@@ -188,12 +191,12 @@ public class ManagePlayer {
 
         EventHandler<MouseEvent> eventHandler = event -> {
             Text text = new Text("Note that first name, last name and nickname is required");
-            text.setLayoutY(275);
-            text.setLayoutX(300);
+            text.setLayoutX(225);
+            text.setLayoutY(175);
             gui.setColors(text,3);
             VBox vbox = new VBox(10);
             vbox.setLayoutX(150);
-            vbox.setLayoutY(325);
+            vbox.setLayoutY(225);
 
 
 
@@ -223,7 +226,7 @@ public class ManagePlayer {
 
             VBox vbox2 = new VBox(10);
             vbox2.setLayoutX(475);
-            vbox2.setLayoutY(325);
+            vbox2.setLayoutY(225);
 
             HBox phoneNumberBox = new HBox(5);
             Label phoneNumberLabel = new Label("Phone number");
@@ -261,8 +264,9 @@ public class ManagePlayer {
             vbox2.getChildren().addAll(phoneNumberBox,streetAdressBox,postalCodeBox,cityBox,countryBox);
 
             Button saveButton = new Button("Save");
-            saveButton.setLayoutX(750);
-            saveButton.setLayoutY(375);
+            gui.setButtonLayout(saveButton,6,150);
+            saveButton.setLayoutY(400);
+            gui.setColors(saveButton,5);
             saveButton.setOnAction(event1 -> {
 
                         Node lastChild = anchorPane.getChildren().get(anchorPane.getChildren().size() - 1);
@@ -279,15 +283,15 @@ public class ManagePlayer {
                                 );
                             try{
                                 playerController.addPlayer(player);
-                                Text textsuccess = new Text("Successfully added "+player.getNickname());
-                                textsuccess.setLayoutX(720);
-                                textsuccess.setLayoutY(420);
+                                Text textsuccess = new Text("Successfully added "+player.getFirstName()+", \""+player.getNickname()+"\"");
+                                textsuccess.setLayoutX(710);
+                                textsuccess.setLayoutY(300);
                                 anchorPane.getChildren().addAll(textsuccess);
                             }catch (Exception ignored){}
                         }else {
                             Text textfail = new Text("Failed to add player\nMake sure required fields\n are filled out\n and that your inputs \naren't too long \n(rule of thumb 30 characters)");
-                            textfail.setLayoutX(720);
-                            textfail.setLayoutY(420);
+                            textfail.setLayoutX(710);
+                            textfail.setLayoutY(300);
                             anchorPane.getChildren().addAll(textfail);
                         };
                     }
@@ -308,9 +312,12 @@ public class ManagePlayer {
 
     }
 
-    public void generatePlayerList(AnchorPane anchorPane, CheckComboBox checkComboBox)  {
+    public void generatePlayerList(AnchorPane anchorPane, CheckComboBox checkComboBox, Button updateButton)  {
         anchorPane.getChildren().removeIf(node -> node instanceof TableView);
+        anchorPane.getChildren().removeIf(node -> node instanceof HBox);
+        anchorPane.getChildren().removeIf(node -> node instanceof VBox);
         TableView<Player> tableView = new TableView<>();
+        updateButton.setVisible(true);
         ObservableList<DisplayItem> displayList = checkComboBox.getCheckModel().getCheckedItems();
         for(DisplayItem displayItem:displayList){
             tableView.getColumns().add(createTableColumn(displayItem.getLabel(), displayItem.getValue(), displayItem.getType()));
@@ -322,7 +329,8 @@ public class ManagePlayer {
 
         tableView.setItems(observableList);
 
-
+        Player selectedItem = tableView.getSelectionModel().getSelectedItem();
+        updateButton.setOnAction(event -> {updatePlayer(anchorPane,tableView.getSelectionModel().getSelectedItem(),tableView);});
 
         tableView.setLayoutX(50);
         tableView.setLayoutY(100);
@@ -349,14 +357,14 @@ public class ManagePlayer {
         deleteText.setLayoutX(475);
         deleteText.setLayoutY(450);
         deleteText.setPrefWidth(120);
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+
 
         EventHandler<KeyEvent> eventHandler = event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 try {
                     int id = Integer.parseInt(deleteText.getText());
                     if (playerController.deletePlayer(id)) {
-                        Text textsuccess = new Text("Successfully deleted");
+                        Text textsuccess = new Text("Successfully deleted player");
                         textsuccess.setLayoutX(475);
                         textsuccess.setLayoutY(435);
                         anchorPane.getChildren().addAll(textsuccess);
@@ -364,7 +372,7 @@ public class ManagePlayer {
                         pause.playFromStart();
 
                     } else {
-                        Text textfail = new Text("Failed to delete");
+                        Text textfail = new Text("Failed to delete player");
                         textfail.setLayoutX(475);
                         textfail.setLayoutY(435);
                         anchorPane.getChildren().addAll(textfail);
@@ -378,6 +386,141 @@ public class ManagePlayer {
 
         deleteText.addEventHandler(KeyEvent.KEY_PRESSED, eventHandler);
         anchorPane.getChildren().add(deleteText);
+    }
+
+    public void updatePlayer(AnchorPane anchorPane, Player player,TableView tableView){
+
+        if (tableView.getSelectionModel().getSelectedItem() != null){
+            anchorPane.getChildren().removeIf(node -> node instanceof TableView);
+            Text text = new Text("Note that first name, last name and nickname is required");
+            text.setLayoutX(225);
+            text.setLayoutY(175);
+            gui.setColors(text,3);
+            VBox vbox = new VBox(10);
+            vbox.setLayoutX(150);
+            vbox.setLayoutY(225);
+
+
+
+            HBox firstNameBox = new HBox(5);
+            Label firstNameLabel = new Label("First name");
+            firstNameLabel.setMinWidth(65);
+            TextField firstNameField = new TextField(player.getFirstName());
+            firstNameBox.getChildren().addAll(firstNameLabel,firstNameField);
+
+            HBox lastNameBox = new HBox(5);
+            Label lastNameLabel = new Label("Last name");
+            lastNameLabel.setMinWidth(65);
+            TextField lastNameField = new TextField(player.getLastName());
+            lastNameBox.getChildren().addAll(lastNameLabel,lastNameField);
+
+            HBox nicknameBox = new HBox(5);
+            Label nicknameLabel = new Label("Nickname");
+            nicknameLabel.setMinWidth(65);
+            TextField nicknameField = new TextField(player.getNickname());
+            nicknameBox.getChildren().addAll(nicknameLabel,nicknameField);
+
+            HBox emailBox = new HBox(5);
+            Label emailLabel = new Label("E-mail");
+            emailLabel.setMinWidth(65);
+            TextField emailField = new TextField(player.getEmail());
+            emailBox.getChildren().addAll(emailLabel,emailField);
+
+            VBox vbox2 = new VBox(10);
+            vbox2.setLayoutX(475);
+            vbox2.setLayoutY(225);
+
+            HBox phoneNumberBox = new HBox(5);
+            Label phoneNumberLabel = new Label("Phone number");
+            phoneNumberLabel.setMinWidth(75);
+            TextField phoneNumberField = new TextField(player.getPhonenumber());
+            phoneNumberBox.getChildren().addAll(phoneNumberLabel,phoneNumberField);
+
+            HBox streetAdressBox = new HBox(5);
+            Label streetAdressLabel = new Label("Street adress");
+            streetAdressLabel.setMinWidth(75);
+            TextField streetAdressField = new TextField(player.getStreetAdress());
+            streetAdressBox.getChildren().addAll(streetAdressLabel,streetAdressField);
+
+            HBox postalCodeBox = new HBox(5);
+            Label postalCodeLabel = new Label("Postal code");
+            postalCodeLabel.setMinWidth(75);
+            TextField postalCodeField = new TextField(player.getPostalCode());
+            postalCodeBox.getChildren().addAll(postalCodeLabel,postalCodeField);
+
+            HBox cityBox = new HBox(5);
+            Label cityLabel = new Label("City");
+            cityLabel.setMinWidth(75);
+            TextField cityField = new TextField(player.getCity());
+            cityBox.getChildren().addAll(cityLabel,cityField);
+
+            HBox countryBox = new HBox(5);
+            Label countryLabel = new Label("Country");
+            countryLabel.setMinWidth(75);
+            TextField countryField = new TextField(player.getCountry());
+            countryBox.getChildren().addAll(countryLabel,countryField);
+
+
+
+            vbox.getChildren().addAll(firstNameBox,lastNameBox,nicknameBox,emailBox);
+            vbox2.getChildren().addAll(phoneNumberBox,streetAdressBox,postalCodeBox,cityBox,countryBox);
+
+            Button saveButton = new Button("Save");
+            gui.setButtonLayout(saveButton,6,150);
+            saveButton.setLayoutY(400);
+            gui.setColors(saveButton,5);
+            saveButton.setOnAction(event1 -> {
+
+                        Node lastChild = anchorPane.getChildren().get(anchorPane.getChildren().size() - 1);
+                        if (lastChild instanceof Text) {
+                            anchorPane.getChildren().remove(lastChild);
+                        }
+
+                        if(!firstNameField.getText().isEmpty()&&!lastNameField.getText().isEmpty()&&!nicknameField.getText().isEmpty()){
+
+                            player.setFirstName(firstNameField.getText());
+                            player.setLastName(lastNameField.getText());
+                            player.setNickname(nicknameField.getText());
+                            player.setEmail(emailField.getText());
+                            player.setPhonenumber(phoneNumberField.getText());
+                            player.setStreetAdress(streetAdressField.getText());
+                            player.setPostalCode(postalCodeField.getText());
+                            player.setCity(cityField.getText());
+                            player.setCountry(countryField.getText());
+                            try{
+                                playerController.updatePlayer(player);
+                                Text textsuccess = new Text("Successfully updated "+player.getFirstName()+"\n\""+player.getNickname()+"\"");
+                                textsuccess.setLayoutX(710);
+                                textsuccess.setLayoutY(300);
+                                anchorPane.getChildren().addAll(textsuccess);
+                                pause.setOnFinished(e -> anchorPane.getChildren().removeAll(textsuccess));
+                                pause.playFromStart();
+
+                            }catch (Exception ignored){}
+                        }else {
+                            Text textfail = new Text("Failed to update player\nMake sure required fields\n are filled out\n and that your inputs \naren't too long \n(rule of thumb 30 characters)");
+                            textfail.setLayoutX(710);
+                            textfail.setLayoutY(300);
+                            anchorPane.getChildren().addAll(textfail);
+                            pause.setOnFinished(e -> anchorPane.getChildren().removeAll(textfail));
+                            pause.playFromStart();
+                        };
+                    }
+            );
+
+            PauseTransition pause2 = new PauseTransition(Duration.seconds(7));
+            anchorPane.getChildren().addAll(text,vbox,vbox2,saveButton);
+            pause.setOnFinished(e -> anchorPane.getChildren().remove(text));
+            pause.playFromStart();
+
+        } else {
+            Text textfail = new Text("Please select a player to update");
+            textfail.setLayoutX(650);
+            textfail.setLayoutY(475);
+            anchorPane.getChildren().add(textfail);
+            pause.setOnFinished(e -> anchorPane.getChildren().remove(textfail));
+            pause.playFromStart();
+        }
     }
 
 }

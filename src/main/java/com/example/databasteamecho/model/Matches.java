@@ -24,8 +24,11 @@ public class Matches {
     @Column(name = "match_status", length = 30)
     private String matchStatus;
 
-    @Column(name = "winner_id")
-    private int winnerId;
+    @Column(name = "winner_player_id")
+    private int winnerPlayerId;
+
+    @Column(name = "winner_team_id")
+    private int winnerTeamId;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "game_id")
@@ -50,16 +53,21 @@ public class Matches {
 
 
     public Matches(){}
-    public Matches(String result, String matchDate){
+    public Matches(String result, String matchDate, String matchStatus, int winnerPlayerId, int winnerTeamId){
         this.result = result;
         this.matchDate = matchDate;
+        this.matchStatus = matchStatus;
+        this.winnerPlayerId = winnerPlayerId;
+        this.winnerTeamId = winnerTeamId;
     }
 
-    public Matches(int id, String result, String matchDate){
+    public Matches(int id, String result, String matchDate, String matchStatus, int winnerPlayerId, int winnerTeamId){
         this.id = id;
         this.result = result;
         this.matchDate = matchDate;
-
+        this.matchStatus = matchStatus;
+        this.winnerPlayerId = winnerPlayerId;
+        this.winnerTeamId = winnerTeamId;
     }
 
     public int getId() {
@@ -94,12 +102,20 @@ public class Matches {
         this.matchStatus = matchStatus;
     }
 
-    public int getWinnerId() {
-        return winnerId;
+    public int getWinnerPlayerId() {
+        return winnerPlayerId;
     }
 
-    public void setWinnerId(int winnerId) {
-        this.winnerId = winnerId;
+    public void setWinnerPlayerId(int winnerPlayerId) {
+        this.winnerPlayerId = winnerPlayerId;
+    }
+
+    public int getWinnerTeamId() {
+        return winnerTeamId;
+    }
+
+    public void setWinnerTeamId(int winnerTeamId) {
+        this.winnerTeamId = winnerTeamId;
     }
 
     public Game getGame(){return game;}
