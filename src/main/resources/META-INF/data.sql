@@ -24,7 +24,10 @@ INSERT INTO Personnel (first_name, last_name, nickname, email) VALUES ('Bertram'
 INSERT INTO Personnel (first_name, last_name, nickname, email) VALUES ('Dinesh', 'Chugtai', 'Java', 'dinesh.chugtai@piedpiper.com');
 
 
-
+INSERT INTO Team (team_name) VALUES ('Team Alpha');
+INSERT INTO Team (team_name) VALUES ('Team Beta');
+INSERT INTO Team (team_name) VALUES ('Team Gamma');
+INSERT INTO Team (team_name) VALUES ('Team Delta');
 
 INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('John', 'Doe', 'Johnd', 'johndoe@example.com', '555', '123 Main St', '10001', 'New York', 'USA');
 INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Alice', 'Smith', 'Alices', 'alicesmith@example.com', '555', '456 Elm St', '20002', 'Washington', 'USA');
@@ -32,7 +35,7 @@ INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_a
 INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Emily', 'Brown', 'Emilyb', 'emilybrown@example.com', '555', '101 Pine St', '40004', 'Chicago', 'USA');
 INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('David', 'Wilson', 'Davidw', 'davidwilson@example.com', '555', '202 Maple St', '50005', 'Los Angeles', 'USA');
 
-INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Liam', 'OBrien', 'IrishLiam', 'liamob@example.com', '111', '42 Castle St', 'D02', 'Dublin', 'Ireland');
+INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Liam', 'O''Brien', 'IrishLiam', 'liamob@example.com', '111', '42 Castle St', 'D02', 'Dublin', 'Ireland');
 
 INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Emilie', 'Dupont', 'FrenchEm', 'emiliedp@example.fr', '222', '58 Rue de Rivoli', '75004', 'Paris', 'France');
 
@@ -43,10 +46,7 @@ INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_a
 INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Lukas', 'Müller', 'GermanLuk', 'lukasm@example.de', '555', 'Kurfürstendamm', '10719', 'Berlin', 'Germany');
 
 
-INSERT INTO Team (team_name) VALUES ('Team Alpha');
-INSERT INTO Team (team_name) VALUES ('Team Beta');
-INSERT INTO Team (team_name) VALUES ('Team Gamma');
-INSERT INTO Team (team_name) VALUES ('Team Delta');
+
 
 
 -- INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (1, 1);
@@ -84,4 +84,11 @@ INSERT INTO Team (team_name) VALUES ('Team Delta');
 --UPDATE player SET team_id = 1 WHERE id BETWEEN 1 AND 5;
 --UPDATE player SET team_id = 2 WHERE id BETWEEN 6 AND 7;
 --UPDATE player SET team_id = 3 WHERE id BETWEEN 8 AND 9;
---UPDATE player SET team_id = 4 WHERE id = 10;
+UPDATE player SET team_id_in_players = 2 WHERE player_id = 1;
+UPDATE player SET team_id_in_players = 2 WHERE player_id = 2; --tabell & kolumn variabel-namn som refereras
+UPDATE player SET team_id_in_players = 2 WHERE player_id = 3;
+UPDATE player SET team_id_in_players = 2 WHERE player_id = 4;
+UPDATE player SET team_id_in_players = 1 WHERE player_id = 5;
+UPDATE player SET team_id_in_players = 1 WHERE player_id = 6;
+UPDATE player SET team_id_in_players = 1 WHERE player_id = 7;
+

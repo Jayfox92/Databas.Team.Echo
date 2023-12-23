@@ -32,7 +32,8 @@ public class Player {
     private String country;
     @ManyToMany(mappedBy = "matches_ListOfPlayers")
     private Set<Matches> player_ListOfMatches = new HashSet<>();
-    @OneToOne(mappedBy = "player")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "team_id_in_players")
     private Team team;
     @ManyToMany
     @JoinTable(

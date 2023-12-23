@@ -153,8 +153,9 @@ public class ManagePlayer {
         checkComboBox.setLayoutX(350);
         checkComboBox.setPrefWidth(200);
 
-
-        generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox, updatePlayerButton));
+        try {
+            generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox, updatePlayerButton));
+        } catch (Exception ignored) {}
 
 
         anchorPane.getChildren().addAll(listPlayersButton,mainMenuButton,doneButton,checkComboBox,generateButton,deletePlayerButton,updatePlayerButton);
@@ -333,8 +334,12 @@ public class ManagePlayer {
 
         tableView.setItems(observableList);
 
-        Player selectedItem = tableView.getSelectionModel().getSelectedItem().getPlayerById();
-        updateButton.setOnAction(event -> {updatePlayer(anchorPane,selectedItem,tableView);});
+        try {
+            Player selectedItem = tableView.getSelectionModel().getSelectedItem().getPlayerById();
+            updateButton.setOnAction(event -> {
+                updatePlayer(anchorPane, selectedItem, tableView);
+            });
+        }catch (Exception ignored){}
 
         tableView.setLayoutX(50);
         tableView.setLayoutY(100);

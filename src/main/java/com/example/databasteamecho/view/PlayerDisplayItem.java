@@ -90,9 +90,11 @@ public PlayerDisplayItem(){}
                     country = player.getCountry()
                     );
             if(player.getTeam()!=null){
-                team = player.getTeam();
-                teamName = team.getTeamName();
-            }
+                try {
+                    a.setTeamName(player.getTeam().getTeamName());
+                }catch (Exception ignored) {}
+
+            } else a.setTeamName("N/A");
             displayItems.add(a);
         }
         return displayItems;

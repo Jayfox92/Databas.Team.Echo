@@ -2,6 +2,7 @@ package com.example.databasteamecho.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //Abenezer
@@ -29,24 +30,26 @@ public class Team {
 
     @ManyToMany(mappedBy = "matches_ListOfTeams")
     private Set<Matches> team_ListOfMatches = new HashSet<>();
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "players_in_team")
-    private Player player;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "team")
+    private Set<Player> team_ListOfPlayers = new HashSet<>();
 
 
   public Team() {}
-    public Team(int id, String teamName) {
 
-    this.id = id;
-    this.teamName = teamName;
-
-    }
-
-    public Team(String teamName) {
+    public Team(int id, String teamName, Set<Game> team_ListOfGames, Set<Matches> team_ListOfMatches, Set<Player> team_ListOfPlayers) {
+        this.id = id;
         this.teamName = teamName;
+        this.team_ListOfGames = team_ListOfGames;
+        this.team_ListOfMatches = team_ListOfMatches;
+        this.team_ListOfPlayers = team_ListOfPlayers;
     }
 
-
+    public Team(String teamName, Set<Game> team_ListOfGames, Set<Matches> team_ListOfMatches, Set<Player> team_ListOfPlayers) {
+        this.teamName = teamName;
+        this.team_ListOfGames = team_ListOfGames;
+        this.team_ListOfMatches = team_ListOfMatches;
+        this.team_ListOfPlayers = team_ListOfPlayers;
+    }
 
     public int getId() {
 
@@ -87,11 +90,11 @@ public class Team {
         this.team_ListOfMatches = team_ListOfMatches;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Set<Player> getTeam_ListOfPlayers() {
+        return team_ListOfPlayers;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setTeam_ListOfPlayers(Set<Player> team_ListOfPlayers) {
+        this.team_ListOfPlayers = team_ListOfPlayers;
     }
 }
