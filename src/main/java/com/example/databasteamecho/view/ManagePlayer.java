@@ -119,24 +119,25 @@ public class ManagePlayer {
 
 
 
-        final CheckComboBox<DisplayItem> checkComboBox = new CheckComboBox<>();
+        final CheckComboBox<PlayerDisplayItem> checkComboBox = new CheckComboBox<>();
         checkComboBox.getItems().addAll(
-                new DisplayItem("ID", "id", Integer.class),
-                new DisplayItem("First name", "firstName", String.class),
-                new DisplayItem("Last name", "lastName",String.class),
-                new DisplayItem("Nickname", "nickname",String.class),
-                new DisplayItem("E-mail", "email",String.class),
-                new DisplayItem("Phone number", "phonenumber",Long.class),
-                new DisplayItem("Street adress", "streetAdress",String.class),
-                new DisplayItem("Postal code", "postalCode",String.class),
-                new DisplayItem("City", "city",String.class),
-                new DisplayItem("Country", "country",String.class)
+                new PlayerDisplayItem("ID", "id", Integer.class),
+                new PlayerDisplayItem("First name", "firstName", String.class),
+                new PlayerDisplayItem("Last name", "lastName",String.class),
+                new PlayerDisplayItem("Nickname", "nickname",String.class),
+                new PlayerDisplayItem("E-mail", "email",String.class),
+                new PlayerDisplayItem("Phone number", "phonenumber",Long.class),
+                new PlayerDisplayItem("Street adress", "streetAdress",String.class),
+                new PlayerDisplayItem("Postal code", "postalCode",String.class),
+                new PlayerDisplayItem("City", "city",String.class),
+                new PlayerDisplayItem("Country", "country",String.class),
+                new PlayerDisplayItem("Team name", "teamName",String.class)
         );
 
 
-        checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<DisplayItem>() {
+        checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<PlayerDisplayItem>() {
             @Override
-            public void onChanged(Change<? extends DisplayItem> change) {
+            public void onChanged(Change<? extends PlayerDisplayItem> change) {
                 if(change.getList().size() == 0){
                     checkComboBox.getCheckModel().clearChecks();
 
@@ -316,21 +317,24 @@ public class ManagePlayer {
         anchorPane.getChildren().removeIf(node -> node instanceof TableView);
         anchorPane.getChildren().removeIf(node -> node instanceof HBox);
         anchorPane.getChildren().removeIf(node -> node instanceof VBox);
-        TableView<Player> tableView = new TableView<>();
+        TableView<PlayerDisplayItem> tableView = new TableView<>();
         updateButton.setVisible(true);
-        ObservableList<DisplayItem> displayList = checkComboBox.getCheckModel().getCheckedItems();
-        for(DisplayItem displayItem:displayList){
-            tableView.getColumns().add(createTableColumn(displayItem.getLabel(), displayItem.getValue(), displayItem.getType()));
+        ObservableList<PlayerDisplayItem> displayList = checkComboBox.getCheckModel().getCheckedItems();
+        for(PlayerDisplayItem playerDisplayItem :displayList){
+            tableView.getColumns().add(createTableColumn(playerDisplayItem.getLabel(), playerDisplayItem.getValue(), playerDisplayItem.getType()));
         }
 
-        List<Player> playerList = playerController.getAll(false);
 
-        ObservableList<Player> observableList = FXCollections.observableList(playerList);
+
+        PlayerDisplayItem listOfPlayerDisplayItems = new PlayerDisplayItem();
+        List<PlayerDisplayItem> playerList = listOfPlayerDisplayItems.getPlayers();
+
+        ObservableList<PlayerDisplayItem> observableList = FXCollections.observableList(playerList);
 
         tableView.setItems(observableList);
 
-        Player selectedItem = tableView.getSelectionModel().getSelectedItem();
-        updateButton.setOnAction(event -> {updatePlayer(anchorPane,tableView.getSelectionModel().getSelectedItem(),tableView);});
+        Player selectedItem = tableView.getSelectionModel().getSelectedItem().getPlayerById();
+        updateButton.setOnAction(event -> {updatePlayer(anchorPane,selectedItem,tableView);});
 
         tableView.setLayoutX(50);
         tableView.setLayoutY(100);

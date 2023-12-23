@@ -40,6 +40,30 @@ public class PlayerController {
     return null;
     }
 
+    public Player getPlayerById(int id) {
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            TypedQuery<Player> playerResult = entityManager.createQuery("FROM Player WHERE id = id", Player.class);
+            Player player = playerResult.getSingleResult();
+            transaction.commit();
+            return player;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return null;
+    }
+
+
+
+
 
     public boolean addPlayer(Object player) {
 

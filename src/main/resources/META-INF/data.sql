@@ -32,20 +32,15 @@ INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_a
 INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Emily', 'Brown', 'Emilyb', 'emilybrown@example.com', '555', '101 Pine St', '40004', 'Chicago', 'USA');
 INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('David', 'Wilson', 'Davidw', 'davidwilson@example.com', '555', '202 Maple St', '50005', 'Los Angeles', 'USA');
 
-INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country)
-VALUES ('Liam', 'O''Brien', 'IrishLiam', 'liamob@example.com', '111', '42 Castle St', 'D02', 'Dublin', 'Ireland');
+INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Liam', 'OBrien', 'IrishLiam', 'liamob@example.com', '111', '42 Castle St', 'D02', 'Dublin', 'Ireland');
 
-INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country)
-VALUES ('Emilie', 'Dupont', 'FrenchEm', 'emiliedp@example.fr', '222', '58 Rue de Rivoli', '75004', 'Paris', 'France');
+INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Emilie', 'Dupont', 'FrenchEm', 'emiliedp@example.fr', '222', '58 Rue de Rivoli', '75004', 'Paris', 'France');
 
-INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country)
-VALUES ('Carlos', 'Garcia', 'CarlosG', 'carlosg@example.es', '333', 'Calle Mayor', '28013', 'Madrid', 'Spain');
+INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Carlos', 'Garcia', 'CarlosG', 'carlosg@example.es', '333', 'Calle Mayor', '28013', 'Madrid', 'Spain');
 
-INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country)
-VALUES ('Sophia', 'Bianchi', 'ItaliaSoph', 'sophiab@example.it', '444', 'Via Condotti', '00187', 'Rome', 'Italy');
+INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Sophia', 'Bianchi', 'ItaliaSoph', 'sophiab@example.it', '444', 'Via Condotti', '00187', 'Rome', 'Italy');
 
-INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country)
-VALUES ('Lukas', 'Müller', 'GermanLuk', 'lukasm@example.de', '555', 'Kurfürstendamm', '10719', 'Berlin', 'Germany');
+INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_adress, postal_code, city, country) VALUES ('Lukas', 'Müller', 'GermanLuk', 'lukasm@example.de', '555', 'Kurfürstendamm', '10719', 'Berlin', 'Germany');
 
 
 INSERT INTO Team (team_name) VALUES ('Team Alpha');
@@ -54,39 +49,39 @@ INSERT INTO Team (team_name) VALUES ('Team Gamma');
 INSERT INTO Team (team_name) VALUES ('Team Delta');
 
 
-INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (1, 1);
-INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (1, 2);
+-- INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (1, 1);
+-- INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (1, 2);
 
-INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (2, 3);
-INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (2, 4);
+-- INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (2, 3);
+-- INSERT INTO manytomany_matches_player (matches_id, player_id) VALUES (2, 4);
 
 -- Linking each match with multiple teams
-INSERT INTO manytomany_matches_team (matches_id, team_id) VALUES (1, 1);
-INSERT INTO manytomany_matches_team (matches_id, team_id) VALUES (1, 2);
+-- INSERT INTO manytomany_matches_team (matches_id, team_id) VALUES (1, 1);
+-- INSERT INTO manytomany_matches_team (matches_id, team_id) VALUES (1, 2);
 -- ... Repeating this pattern for matches 1 through 10, linking each to two teams ...
 -- For example:
-INSERT INTO manytomany_matches_team (matches_id, team_id) VALUES (2, 2);
-INSERT INTO manytomany_matches_team (matches_id, team_id) VALUES (2, 3);
+-- INSERT INTO manytomany_matches_team (matches_id, team_id) VALUES (2, 2);
+-- INSERT INTO manytomany_matches_team (matches_id, team_id) VALUES (2, 3);
 -- Continue this pattern up to match_id = 10 and team_id = 5
 
 -- Linking each player with multiple games
-INSERT INTO manytomany_player_game (player_id, game_id) VALUES (1, 1);
-INSERT INTO manytomany_player_game (player_id, game_id) VALUES (1, 2);
+-- INSERT INTO manytomany_player_game (player_id, game_id) VALUES (1, 1);
+-- INSERT INTO manytomany_player_game (player_id, game_id) VALUES (1, 2);
 -- ... Repeating this pattern for players 1 through 10, linking each to two games ...
 -- For example:
-INSERT INTO manytomany_player_game (player_id, game_id) VALUES (2, 2);
-INSERT INTO manytomany_player_game (player_id, game_id) VALUES (2, 3);
+-- INSERT INTO manytomany_player_game (player_id, game_id) VALUES (2, 2);
+-- INSERT INTO manytomany_player_game (player_id, game_id) VALUES (2, 3);
 -- Continue this pattern up to player_id = 10 and game_id = 5
 
 
-INSERT INTO manytomany_team_game (team_id, game_id) VALUES (1, 1);
-INSERT INTO manytomany_team_game (team_id, game_id) VALUES (1, 2);
+-- INSERT INTO manytomany_team_game (team_id, game_id) VALUES (1, 1);
+-- INSERT INTO manytomany_team_game (team_id, game_id) VALUES (1, 2);
 
-INSERT INTO manytomany_team_game (team_id, game_id) VALUES (2, 2);
-INSERT INTO manytomany_team_game (team_id, game_id) VALUES (2, 3);
+-- INSERT INTO manytomany_team_game (team_id, game_id) VALUES (2, 2);
+-- INSERT INTO manytomany_team_game (team_id, game_id) VALUES (2, 3);
 
 
-UPDATE player SET team_id = 1 WHERE id BETWEEN 1 AND 5;
-UPDATE player SET team_id = 2 WHERE id BETWEEN 6 AND 7;
-UPDATE player SET team_id = 3 WHERE id BETWEEN 8 AND 9;
-UPDATE player SET team_id = 4 WHERE id = 10;
+--UPDATE player SET team_id = 1 WHERE id BETWEEN 1 AND 5;
+--UPDATE player SET team_id = 2 WHERE id BETWEEN 6 AND 7;
+--UPDATE player SET team_id = 3 WHERE id BETWEEN 8 AND 9;
+--UPDATE player SET team_id = 4 WHERE id = 10;
