@@ -50,17 +50,25 @@ public class Matches {
 
 
     public Matches(){}
-    public Matches(String result, String matchDate){
+    public Matches(String result, String matchDate, String matchStatus, int winnerId){
         this.result = result;
         this.matchDate = matchDate;
+        this.matchStatus = matchStatus;
+        this.winnerId = winnerId;
     }
 
-    public Matches(int id, String result, String matchDate){
+    public Matches(int id, String result, String matchDate, String matchStatus, int winnerId){
         this.id = id;
         this.result = result;
         this.matchDate = matchDate;
+        this.matchStatus = matchStatus;
+        this.winnerId = winnerId;
 
     }
+
+    public Matches(String text, String text1, String text2, String text3) {
+    }
+
 
     public int getId() {
         return id;

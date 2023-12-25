@@ -1,7 +1,7 @@
 package com.example.databasteamecho.view;
 
 import com.example.databasteamecho.controller.GameController;
-import com.example.databasteamecho.controller.MatchesController;
+import com.example.databasteamecho.controller.MatchController;
 import com.example.databasteamecho.controller.PlayerController;
 import com.example.databasteamecho.controller.TeamController;
 import com.example.databasteamecho.model.Game;
@@ -35,10 +35,11 @@ import org.controlsfx.control.CheckComboBox;
 public class GUI extends Application {
     private Stage primaryStage;
     GameController gameController;
-    MatchesController matchesController;
+    MatchController matchController;
     PlayerController playerController;
     TeamController teamController;
     ManagePlayer managePlayer;
+    ManageMatch manageMatch;
 
     public static void main(String[] args) {
 
@@ -50,12 +51,13 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws IOException {
     this.primaryStage = primaryStage;
     this.gameController = new GameController();
-    this.matchesController = new MatchesController();
+    this.matchController = new MatchController();
     this.playerController = new PlayerController();
     this.teamController = new TeamController();
 
 
     this.managePlayer = new ManagePlayer(primaryStage,this::firstScene,playerController);
+    this.manageMatch = new ManageMatch(primaryStage,this::firstScene,matchController);
 
 
     firstScene();
@@ -192,6 +194,7 @@ public class GUI extends Application {
         Button matchButton = new Button("Manage matches");
         setButtonLayout(matchButton,4,160);
         setColors(matchButton,4);
+        matchButton.setOnAction(event -> manageMatch.matchScene());
 
 
         Button staffButton = new Button("Manage staff");
