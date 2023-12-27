@@ -55,7 +55,7 @@ public class GUI extends Application {
     this.teamController = new TeamController();
 
 
-    this.managePlayer = new ManagePlayer(primaryStage,this::firstScene,playerController);
+    this.managePlayer = new ManagePlayer(primaryStage,this::firstScene,playerController, gameController);
 
 
     firstScene();

@@ -1,12 +1,17 @@
 package com.example.databasteamecho.view;
 
+import com.example.databasteamecho.controller.GameController;
 import com.example.databasteamecho.controller.PlayerController;
+import com.example.databasteamecho.model.Game;
 import com.example.databasteamecho.model.Player;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -28,13 +33,17 @@ public class ManagePlayer {
 
     private Stage primaryStage;
     private PlayerController playerController;
+    private GameController gameController;
+
+
     private GUI gui = new GUI();
     private Runnable guiCallback;
     private PauseTransition pause = new PauseTransition(Duration.seconds(3));
-    public ManagePlayer(Stage primaryStage,Runnable guiCallback,PlayerController playerController) {
+    public ManagePlayer(Stage primaryStage, Runnable guiCallback, PlayerController playerController, GameController gameController) {
         this.primaryStage = primaryStage;
         this.guiCallback = guiCallback;
         this.playerController = playerController;
+        this.gameController = gameController;
     }
 
     public void playerScene(){
@@ -153,8 +162,23 @@ public class ManagePlayer {
         checkComboBox.setLayoutX(350);
         checkComboBox.setPrefWidth(200);
 
+        CheckComboBox<PlayerDisplayItem> gameFilterBox = new CheckComboBox<>();
+        List<Game> listOfGames = gameController.getAll(false);
+        for (int i = 0; i < listOfGames.size(); i++){
+            gameFilterBox.getItems().add(new PlayerDisplayItem(listOfGames.get(i).getGameName(), "gameName", String.class));
+        }
+
+        gameFilterBox.setTitle("Filter by game");
+        gameFilterBox.setStyle("-fx-font-size: 18;");
+        gameFilterBox.setLayoutY(450);
+        gameFilterBox.setLayoutX(125);
+        gameFilterBox.setPrefWidth(200);
+        anchorPane.getChildren().add(gameFilterBox);
+
+
+
         try {
-            generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox, updatePlayerButton));
+            generateButton.setOnAction(event1 -> generatePlayerList(anchorPane, checkComboBox, gameFilterBox,updatePlayerButton));
         } catch (Exception ignored) {}
 
 
@@ -314,18 +338,29 @@ public class ManagePlayer {
 
     }
 
-    public void generatePlayerList(AnchorPane anchorPane, CheckComboBox checkComboBox, Button updateButton)  {
+    public void generatePlayerList(AnchorPane anchorPane, CheckComboBox checkComboBox, CheckComboBox gamefilterbox,Button updateButton) {
         anchorPane.getChildren().removeIf(node -> node instanceof TableView);
         anchorPane.getChildren().removeIf(node -> node instanceof HBox);
         anchorPane.getChildren().removeIf(node -> node instanceof VBox);
         TableView<PlayerDisplayItem> tableView = new TableView<>();
         updateButton.setVisible(true);
+
+
         ObservableList<PlayerDisplayItem> displayList = checkComboBox.getCheckModel().getCheckedItems();
-        for(PlayerDisplayItem playerDisplayItem :displayList){
+
+        /*if (gamefilterbox.getCheckModel().getCheckedItems() != null){
+            ObservableList<PlayerDisplayItem> checkedGames = gamefilterbox.getCheckModel().getCheckedItems();
+
+
+
+        } else {
+            for (PlayerDisplayItem playerDisplayItem : displayList) {
+                tableView.getColumns().add(createTableColumn(playerDisplayItem.getLabel(), playerDisplayItem.getValue(), playerDisplayItem.getType()));
+            }
+        }*/
+        for (PlayerDisplayItem playerDisplayItem : displayList) {
             tableView.getColumns().add(createTableColumn(playerDisplayItem.getLabel(), playerDisplayItem.getValue(), playerDisplayItem.getType()));
         }
-
-
 
         PlayerDisplayItem listOfPlayerDisplayItems = new PlayerDisplayItem();
         List<PlayerDisplayItem> playerList = listOfPlayerDisplayItems.getPlayers();
@@ -333,20 +368,41 @@ public class ManagePlayer {
         ObservableList<PlayerDisplayItem> observableList = FXCollections.observableList(playerList);
 
         tableView.setItems(observableList);
+        // Define the EventHandler
+        EventHandler<ActionEvent> updateHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PlayerDisplayItem selectedItem = tableView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    try {
+                        Player playerToUpdate = selectedItem.getPlayerById();
+                        updatePlayer(anchorPane, playerToUpdate, tableView);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Text textfail = new Text("Please select a player to update");
+                    textfail.setLayoutX(650);
+                    textfail.setLayoutY(475);
+                    anchorPane.getChildren().add(textfail);
+                    pause.setOnFinished(e -> anchorPane.getChildren().remove(textfail));
+                    pause.playFromStart();
+                }
+            }
+        };
 
-        try {
-            Player selectedItem = tableView.getSelectionModel().getSelectedItem().getPlayerById();
-            updateButton.setOnAction(event -> {
-                updatePlayer(anchorPane, selectedItem, tableView);
-            });
-        }catch (Exception ignored){}
+
+        updateButton.setOnAction(updateHandler);
+
+
+
 
         tableView.setLayoutX(50);
         tableView.setLayoutY(100);
         tableView.setPrefHeight(playerList.size()*35);
         tableView.setPrefWidth(displayList.size()*100);
         tableView.setMinHeight(100);
-        tableView.setMaxHeight(350);
+        tableView.setMaxHeight(300);
         tableView.setMaxWidth(800);
 
         anchorPane.getChildren().addAll(tableView);
@@ -399,7 +455,7 @@ public class ManagePlayer {
 
     public void updatePlayer(AnchorPane anchorPane, Player player,TableView tableView){
 
-        if (tableView.getSelectionModel().getSelectedItem() != null){
+
             anchorPane.getChildren().removeIf(node -> node instanceof TableView);
             Text text = new Text("Note that first name, last name and nickname is required");
             text.setLayoutX(225);
@@ -522,14 +578,7 @@ public class ManagePlayer {
             pause.setOnFinished(e -> anchorPane.getChildren().remove(text));
             pause.playFromStart();
 
-        } else {
-            Text textfail = new Text("Please select a player to update");
-            textfail.setLayoutX(650);
-            textfail.setLayoutY(475);
-            anchorPane.getChildren().add(textfail);
-            pause.setOnFinished(e -> anchorPane.getChildren().remove(textfail));
-            pause.playFromStart();
-        }
+
     }
 
 }

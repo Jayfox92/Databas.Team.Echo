@@ -1,7 +1,9 @@
 package com.example.databasteamecho.view;
 
+import com.example.databasteamecho.controller.GameController;
 import com.example.databasteamecho.controller.PlayerController;
 import com.example.databasteamecho.controller.TeamController;
+import com.example.databasteamecho.model.Game;
 import com.example.databasteamecho.model.Player;
 import com.example.databasteamecho.model.Team;
 
@@ -11,6 +13,7 @@ import java.util.List;
 public class PlayerDisplayItem {
     private PlayerController playerController = new PlayerController();
     private TeamController teamController = new TeamController();
+    private GameController gameController = new GameController();
     private String label;
     private String value;
 
@@ -94,7 +97,7 @@ public PlayerDisplayItem(){}
                     a.setTeamName(player.getTeam().getTeamName());
                 }catch (Exception ignored) {}
 
-            } else a.setTeamName("N/A");
+            }
             displayItems.add(a);
         }
         return displayItems;
@@ -102,6 +105,10 @@ public PlayerDisplayItem(){}
 
     public Player getPlayerById(){
     return playerController.getPlayerById(id);
+    }
+
+    public List<Game> getGames(){
+    return gameController.getAll(false);
     }
 
 

@@ -85,10 +85,11 @@ INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_a
 --UPDATE player SET team_id = 2 WHERE id BETWEEN 6 AND 7;
 --UPDATE player SET team_id = 3 WHERE id BETWEEN 8 AND 9;
 UPDATE player SET team_id_in_players = 2 WHERE player_id = 1;
-UPDATE player SET team_id_in_players = 2 WHERE player_id = 2; --tabell & kolumn variabel-namn som refereras
+UPDATE player SET team_id_in_players = 2 WHERE player_id = 2;
 UPDATE player SET team_id_in_players = 2 WHERE player_id = 3;
 UPDATE player SET team_id_in_players = 2 WHERE player_id = 4;
 UPDATE player SET team_id_in_players = 1 WHERE player_id = 5;
 UPDATE player SET team_id_in_players = 1 WHERE player_id = 6;
 UPDATE player SET team_id_in_players = 1 WHERE player_id = 7;
+
 

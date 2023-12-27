@@ -1,5 +1,6 @@
 package com.example.databasteamecho.controller;
 
+import com.example.databasteamecho.model.Game;
 import com.example.databasteamecho.model.Player;
 
 import javax.persistence.*;
@@ -40,13 +41,41 @@ public class PlayerController {
     return null;
     }
 
+    public List<Player> getPlayersByGame(List<Game> listOfGames){
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        List<Player> playerListToReturn = new ArrayList<>();
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            for (Game game:listOfGames){
+                int gameId = game.getId();
+                TypedQuery<Player> query = entityManager.createQuery(
+                        "SELECT p FROM Player p JOIN p.player_ListOfMatches g WHERE g.id = :gameId", Player.class);
+                query.setParameter("gameId", gameId);
+                playerListToReturn.addAll(query.getResultList());
+            }
+            transaction.commit();
+            return playerListToReturn;
+        } catch (Exception e){
+            if(transaction!= null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+        return null;
+    }
+
     public Player getPlayerById(int id) {
         EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         try {
             transaction = entityManager.getTransaction();
             transaction.begin();
-            TypedQuery<Player> playerResult = entityManager.createQuery("FROM Player WHERE id = id", Player.class);
+            TypedQuery<Player> playerResult = entityManager.createQuery("FROM Player WHERE id = :id", Player.class);
+            playerResult.setParameter("id",id);
             Player player = playerResult.getSingleResult();
             transaction.commit();
             return player;
