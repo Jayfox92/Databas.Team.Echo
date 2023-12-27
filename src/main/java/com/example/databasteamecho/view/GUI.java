@@ -56,7 +56,7 @@ public class GUI extends Application {
 
 
     this.managePlayer = new ManagePlayer(primaryStage,this::firstScene,playerController, gameController);
-
+    playerController.assignGamesToPlayersAndTeams();
 
     firstScene();
     }

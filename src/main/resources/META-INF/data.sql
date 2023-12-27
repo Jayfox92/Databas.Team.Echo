@@ -77,8 +77,8 @@ INSERT INTO player(first_name, last_name, nickname, email, phonenumber, street_a
 -- INSERT INTO manytomany_team_game (team_id, game_id) VALUES (1, 1);
 -- INSERT INTO manytomany_team_game (team_id, game_id) VALUES (1, 2);
 
--- INSERT INTO manytomany_team_game (team_id, game_id) VALUES (2, 2);
--- INSERT INTO manytomany_team_game (team_id, game_id) VALUES (2, 3);
+--INSERT INTO manytomany_team_game (team_id, game_id) VALUES (1, 1);
+--INSERT INTO manytomany_team_game (team_id, game_id) VALUES (2, 3);
 
 
 --UPDATE player SET team_id = 1 WHERE id BETWEEN 1 AND 5;

@@ -9,6 +9,7 @@ import com.example.databasteamecho.model.Team;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class PlayerDisplayItem {
     private PlayerController playerController = new PlayerController();
@@ -39,6 +40,13 @@ public PlayerDisplayItem(){}
         this.label = label;
         this.value = value;
         this.type = type;
+    }
+
+    public PlayerDisplayItem(String label, String value, Class<?> type, int id) {
+        this.label = label;
+        this.value = value;
+        this.type = type;
+        this.id = id;
     }
 
     public PlayerDisplayItem(int id, String firstName, String lastName, String nickname, String email, String phonenumber, String streetAdress, String postalCode, String city, String country) {
@@ -102,6 +110,32 @@ public PlayerDisplayItem(){}
         }
         return displayItems;
 }
+
+    public List<PlayerDisplayItem> convertPlayersToDisplayItems(Set<Player> listOfPlayers){
+        List<PlayerDisplayItem> displayItems = new ArrayList<PlayerDisplayItem>();
+        for(Player player : listOfPlayers){
+            PlayerDisplayItem a = new PlayerDisplayItem(
+                    id = player.getId(),
+                    firstName = player.getFirstName(),
+                    lastName = player.getLastName(),
+                    nickname = player.getNickname(),
+                    email = player.getEmail(),
+                    phonenumber = player.getPhonenumber(),
+                    streetAdress = player.getStreetAdress(),
+                    postalCode = player.getPostalCode(),
+                    city = player.getCity(),
+                    country = player.getCountry()
+            );
+            if(player.getTeam()!=null){
+                try {
+                    a.setTeamName(player.getTeam().getTeamName());
+                }catch (Exception ignored) {}
+
+            }
+            displayItems.add(a);
+        }
+        return displayItems;
+    }
 
     public Player getPlayerById(){
     return playerController.getPlayerById(id);

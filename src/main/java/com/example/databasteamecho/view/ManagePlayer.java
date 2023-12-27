@@ -27,7 +27,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.CheckComboBox;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ManagePlayer {
 
@@ -165,7 +168,7 @@ public class ManagePlayer {
         CheckComboBox<PlayerDisplayItem> gameFilterBox = new CheckComboBox<>();
         List<Game> listOfGames = gameController.getAll(false);
         for (int i = 0; i < listOfGames.size(); i++){
-            gameFilterBox.getItems().add(new PlayerDisplayItem(listOfGames.get(i).getGameName(), "gameName", String.class));
+            gameFilterBox.getItems().add(new PlayerDisplayItem(listOfGames.get(i).getGameName(), "gameName", String.class, listOfGames.get(i).getId()));
         }
 
         gameFilterBox.setTitle("Filter by game");
@@ -345,29 +348,43 @@ public class ManagePlayer {
         TableView<PlayerDisplayItem> tableView = new TableView<>();
         updateButton.setVisible(true);
 
-
+        PlayerDisplayItem listOfPlayerDisplayItems = new PlayerDisplayItem();
         ObservableList<PlayerDisplayItem> displayList = checkComboBox.getCheckModel().getCheckedItems();
 
-        /*if (gamefilterbox.getCheckModel().getCheckedItems() != null){
+        if (!gamefilterbox.getCheckModel().getCheckedItems().isEmpty()){
             ObservableList<PlayerDisplayItem> checkedGames = gamefilterbox.getCheckModel().getCheckedItems();
+            List<Integer> listOfCheckedGameIds = new ArrayList<>();
+            for (PlayerDisplayItem playerDisplayItem : checkedGames) {
+                listOfCheckedGameIds.add(playerDisplayItem.getId());
+            }
+            List<Game> selectedGames = gameController.getGamesByIds(listOfCheckedGameIds);
+            Set<Player> filteredPlayers = playerController.getPlayersByGame(selectedGames);
 
+            List<PlayerDisplayItem> playerList = listOfPlayerDisplayItems.convertPlayersToDisplayItems(filteredPlayers);
 
+            for (PlayerDisplayItem playerDisplayItem : displayList) {
+                tableView.getColumns().add(createTableColumn(playerDisplayItem.getLabel(), playerDisplayItem.getValue(), playerDisplayItem.getType()));
+            }
+
+            ObservableList<PlayerDisplayItem> observableList = FXCollections.observableList(playerList);
+            tableView.setItems(observableList);
 
         } else {
             for (PlayerDisplayItem playerDisplayItem : displayList) {
                 tableView.getColumns().add(createTableColumn(playerDisplayItem.getLabel(), playerDisplayItem.getValue(), playerDisplayItem.getType()));
             }
-        }*/
-        for (PlayerDisplayItem playerDisplayItem : displayList) {
-            tableView.getColumns().add(createTableColumn(playerDisplayItem.getLabel(), playerDisplayItem.getValue(), playerDisplayItem.getType()));
+            List<PlayerDisplayItem> playerList = listOfPlayerDisplayItems.getPlayers();
+
+            ObservableList<PlayerDisplayItem> observableList = FXCollections.observableList(playerList);
+            tableView.setItems(observableList);
         }
 
-        PlayerDisplayItem listOfPlayerDisplayItems = new PlayerDisplayItem();
-        List<PlayerDisplayItem> playerList = listOfPlayerDisplayItems.getPlayers();
 
-        ObservableList<PlayerDisplayItem> observableList = FXCollections.observableList(playerList);
 
-        tableView.setItems(observableList);
+
+
+
+
         // Define the EventHandler
         EventHandler<ActionEvent> updateHandler = new EventHandler<ActionEvent>() {
             @Override
@@ -399,9 +416,9 @@ public class ManagePlayer {
 
         tableView.setLayoutX(50);
         tableView.setLayoutY(100);
-        tableView.setPrefHeight(playerList.size()*35);
+        tableView.setPrefHeight(300);
         tableView.setPrefWidth(displayList.size()*100);
-        tableView.setMinHeight(100);
+        tableView.setMinHeight(125);
         tableView.setMaxHeight(300);
         tableView.setMaxWidth(800);
 

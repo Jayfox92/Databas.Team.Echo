@@ -36,4 +36,28 @@ public class GameController {
         }
         return null;
     }
+
+    public List<Game> getGamesByIds(List<Integer> gameIds){
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        List<Game> gameListToReturn = new ArrayList<>();
+        try{
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
+            TypedQuery<Game> query = entityManager.createQuery("FROM Game g WHERE g.id IN :gameIds", Game.class);
+            query.setParameter("gameIds", gameIds);
+            gameListToReturn = query.getResultList();
+
+            transaction.commit();
+        }catch (Exception e){
+            if (transaction!= null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }finally{
+            entityManager.close();
+        }
+        return gameListToReturn;
+    }
 }
