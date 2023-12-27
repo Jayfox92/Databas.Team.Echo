@@ -134,7 +134,7 @@ public class ManagePlayer {
         );
 
 
-        checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<DisplayItem>() {
+       checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<DisplayItem>() {
             @Override
             public void onChanged(Change<? extends DisplayItem> change) {
                 if(change.getList().size() == 0){

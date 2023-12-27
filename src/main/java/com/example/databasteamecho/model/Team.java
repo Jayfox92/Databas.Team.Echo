@@ -6,92 +6,83 @@ import java.util.Set;
 
 //Abenezer
 @Entity
-@Table (name="team")
+@Table(name = "team")
 public class Team {
-
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column (name =  "team_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "team_id")
     private int id;
 
+    @Column(name = "team_name", length = 30)
+    private String teamName;
 
-    @Column (name= "team_name", length = 30)
-    private  String teamName;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "game_id")
+    private Game game;
 
-
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-    name = "manytomany_team_game",
-    joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "game_id")
-    )
-    private Set<Game> team_ListOfGames = new HashSet<>();
-
-    @ManyToMany(mappedBy = "matches_ListOfTeams")
-    private Set<Matches> team_ListOfMatches = new HashSet<>();
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "player_id")   // This line was missing // Abenezer
-    private Player player;
-
-
-  public Team() {}
-    public Team(int id, String teamName) {
-
-    this.id = id;
-    this.teamName = teamName;
-
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //private Set<Player> team_id_in_players = new HashSet<>();
+    private Set<Player> players;
+    // Constructors
+    public Team() {
     }
 
     public Team(String teamName) {
         this.teamName = teamName;
     }
 
-
-
-    public int getId() {
-
-    return id;
-
+    public Team(int id, String teamName, Game game, Set<Player> players) {
+        this.id = id;
+        this.teamName = teamName;
+        this.game = game;
+        this.players = players;
     }
+
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
     public void setId(int id) {
-
-    this.id = id;
-
+        this.id = id;
     }
 
     public String getTeamName() {
-
-    return teamName;
-
+        return teamName;
     }
 
     public void setTeamName(String teamName) {
-
-    this.teamName = teamName;
-
+        this.teamName = teamName;
     }
 
-    public Set<Game> getTeam_ListOfGames() {
-        return team_ListOfGames;
+    public Game getGame() {
+        return game;
     }
 
-    public void setTeam_ListOfGames(Set<Game> team_ListOfGames) {
-        this.team_ListOfGames = team_ListOfGames;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
-    public Set<Matches> getTeam_ListOfMatches() {
-        return team_ListOfMatches;
+  /*  public Set<Player> getTeam_id_in_players() {
+        return team_id_in_players;
+     } */
+
+    /*public void setTeam_id_in_players(Set<Player> team_id_in_players) {
+        this.team_id_in_players = team_id_in_players;
+    } */
+
+    public Set<Player> getPlayers() {
+        return players;
     }
 
-    public void setTeam_ListOfMatches(Set<Matches> team_ListOfMatches) {
-        this.team_ListOfMatches = team_ListOfMatches;
+    public void setPlayers(Set<Player> players) {
+        this.players = players;
     }
 
-    public Player getPlayer() {
-        return player;
+    @Override
+    public String toString() {
+        return this.teamName; // Or any other meaningful representation
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
+
 }

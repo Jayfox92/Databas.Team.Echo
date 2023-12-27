@@ -16,57 +16,61 @@ public class Game {
     @Column(name = "game_name", length = 40, nullable = false)
     private String gameName;
 
-    @Column(name = "players_per_team")
+    @Column(name = "players_per_team", length = 40, nullable = false)
     private int playersPerTeam;
 
-    @OneToMany(mappedBy = "game")
-    private Set<Matches> game_ListOfMatches = new HashSet<>();
-
-    @ManyToMany(mappedBy = "team_ListOfGames")
-    private Set<Team> game_ListOfTeams = new HashSet<>();
-    @ManyToMany(mappedBy = "player_gameList")
-    private Set<Player> game_ListOfPlayers = new HashSet<>();
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    private Set<Team> teams;
 
 
-    public Game(){}
-    public Game(int id, String gameName, int playersPerTeam){
+    public Game() {
+    }
+
+    public Game(String gameName) {
+        this.gameName = gameName;
+        this.playersPerTeam = playersPerTeam;
+    }
+
+    public Game(String gameName, int playersPerTeam, Set<Team> teams) {
+        this.gameName = gameName;
+        this.playersPerTeam = playersPerTeam;
+        this.teams = teams;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
         this.gameName = gameName;
+    }
+
+    public int getPlayersPerTeam() {
+        return playersPerTeam;
+    }
+
+    public void setPlayersPerTeam(int playersPerTeam) {
         this.playersPerTeam = playersPerTeam;
     }
-    public Game(String gameName, int playersPerTeam){
-        this.gameName = gameName;
-        this.playersPerTeam = playersPerTeam;
+
+
+    public Set<Team> getTeams() {
+        return teams;
     }
 
-    public int getId(){return id;}
-    public void setId(int id){this.id = id;}
-    public String getGameName(){return gameName;}
-    public void setGameName(String gameName){this.gameName = gameName;}
-    public int getPlayersPerTeam(){return playersPerTeam;}
-    public void setPlayersPerTeam(int playersPerTeam){this.playersPerTeam = playersPerTeam;}
-
-    public Set<Matches> getGame_ListOfMatches() {
-        return game_ListOfMatches;
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
     }
 
-    public void setGame_ListOfMatches(Set<Matches> game_ListOfMatches) {
-        this.game_ListOfMatches = game_ListOfMatches;
-    }
 
-    public Set<Team> getGame_ListOfTeams() {
-        return game_ListOfTeams;
-    }
 
-    public void setGame_ListOfTeams(Set<Team> game_ListOfTeams) {
-        this.game_ListOfTeams = game_ListOfTeams;
-    }
-
-    public Set<Player> getGame_ListOfPlayers() {
-        return game_ListOfPlayers;
-    }
-
-    public void setGame_ListOfPlayers(Set<Player> game_ListOfPlayers) {
-        this.game_ListOfPlayers = game_ListOfPlayers;
-    }
 }

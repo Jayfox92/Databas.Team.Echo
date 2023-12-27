@@ -32,7 +32,9 @@ public class Player {
     private String country;
     @ManyToMany(mappedBy = "matches_ListOfPlayers")
     private Set<Matches> player_ListOfMatches = new HashSet<>();
-    @OneToOne(mappedBy = "player")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //@JoinColumn(name = "team_id_in_players")
+     @JoinColumn(name = "team_id")
     private Team team;
     @ManyToMany
     @JoinTable(
@@ -171,4 +173,13 @@ public class Player {
     public void setPlayer_gameList(Set<Game> player_gameList) {
         this.player_gameList = player_gameList;
     }
+
+
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + " (" + nickname + ")";
+    }
+
+
 }

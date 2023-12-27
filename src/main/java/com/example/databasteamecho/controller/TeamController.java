@@ -1,5 +1,7 @@
 package com.example.databasteamecho.controller;
 
+import com.example.databasteamecho.model.Game;
+import com.example.databasteamecho.model.Player;
 import com.example.databasteamecho.model.Team;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,12 +12,14 @@ import java.util.List;
  */
 
 // Abenezer
+
+
 public class TeamController {
 
     public static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence.createEntityManagerFactory("hibernate");
 
     // CREATE
-    public boolean saveTeam(Team team) {
+    public boolean addTeam(Team team) {
         EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         try {
@@ -35,26 +39,29 @@ public class TeamController {
         return false;
     }
 
-    // READ all teams
-    public List<Team> getAllTeams(boolean printOut){
+
+
+    public List<Team> getAllTeams(boolean printOut) {
         EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         List<Team> teamListToReturn = new ArrayList<>();
         try {
             transaction = entityManager.getTransaction();
             transaction.begin();
-            TypedQuery<Team> resultList = entityManager.createQuery("FROM Team", Team.class);
-            teamListToReturn.addAll(resultList.getResultList());
-            transaction.commit();
-            if(printOut){
-                for (Team team : teamListToReturn) {
-                    System.out.println(team.getId() + ". " + team.getTeamName());
 
+            TypedQuery<Team> query = entityManager.createQuery(
+                    "SELECT t FROM Team t INNER JOIN FETCH t.game", Team.class);
+            teamListToReturn = query.getResultList();
+            transaction.commit();
+            if (printOut) {
+                for (Team team : teamListToReturn) {
+                    String gameName = team.getGame() != null ? team.getGame().getGameName() : "No Game";
+                    System.out.println(team.getId() + ". " + team.getTeamName() + " - " + gameName);
                 }
             }
             return teamListToReturn;
-        } catch (Exception e){
-            if(transaction != null){
+        } catch (Exception e) {
+            if (transaction != null) {
                 transaction.rollback();
             }
             e.printStackTrace();
@@ -63,6 +70,9 @@ public class TeamController {
         }
         return null;
     }
+
+
+
 
     // READ 1 team by ID
     public Team getTeamById(int id){
@@ -147,6 +157,71 @@ public class TeamController {
         }
         return false;
     }
+
+
+
+
+    public boolean addPlayerToTeam(int playerId, int teamId) {
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
+            Player player = entityManager.find(Player.class, playerId);
+            Team team = entityManager.find(Team.class, teamId);
+
+            if (player != null && team != null) { //check if team and player arent not null
+                player.setTeam(team);
+                entityManager.merge(player);
+            }
+
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+
+
+    public boolean removePlayerFromTeam(int playerId) {
+        EntityManager entityManager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+
+            Player player = entityManager.find(Player.class, playerId);
+
+
+            if (player != null) {
+                player.setTeam(null); // Removing the team association
+                entityManager.merge(player);
+            }
+
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+
+
+
 
 
 }

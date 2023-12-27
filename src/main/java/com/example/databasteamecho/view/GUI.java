@@ -1,18 +1,13 @@
 package com.example.databasteamecho.view;
 
-import com.example.databasteamecho.controller.GameController;
-import com.example.databasteamecho.controller.MatchesController;
-import com.example.databasteamecho.controller.PlayerController;
-import com.example.databasteamecho.controller.TeamController;
-import com.example.databasteamecho.model.Game;
-import com.example.databasteamecho.model.Matches;
-import com.example.databasteamecho.model.Player;
-import com.example.databasteamecho.model.Team;
+import com.example.databasteamecho.controller.*;
+import com.example.databasteamecho.model.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -28,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.controlsfx.control.CheckComboBox;
 
@@ -39,7 +35,9 @@ public class GUI extends Application {
     PlayerController playerController;
     TeamController teamController;
     ManagePlayer managePlayer;
+    ManageTeams manageTeams;
 
+    PersonnelController personnelController;
     public static void main(String[] args) {
 
         launch();
@@ -53,12 +51,12 @@ public class GUI extends Application {
     this.matchesController = new MatchesController();
     this.playerController = new PlayerController();
     this.teamController = new TeamController();
-
+    this.personnelController = new PersonnelController();
 
     this.managePlayer = new ManagePlayer(primaryStage,this::firstScene,playerController);
+    this.manageTeams = new ManageTeams(primaryStage,this::firstScene,teamController); //Abenezer
 
-
-    firstScene();
+    loginScene();
     }
     public void setButtonLayout(Button button, int choice, int widthDefault150){
         //upper row = 1,2,3,4
@@ -114,7 +112,19 @@ public class GUI extends Application {
                 button.setPrefWidth(150);
                 button.setLayoutY(50);
                 button.setLayoutX(650);
-            default:
+
+            case 11:
+                button.setPrefWidth(widthDefault150);
+                button.setLayoutY(500);
+                button.setLayoutX(700);
+                break;
+
+            case 12:
+                button.setPrefWidth(widthDefault150);
+                button.setLayoutY(160);
+                button.setLayoutX(735);
+                break;
+                default:
                 break;
 
         }
@@ -163,6 +173,53 @@ public class GUI extends Application {
 
     }
 
+    //Abenezer
+   public void loginScene (){
+
+       Text loginPageText = new Text("Piper Games Personnel Login");
+       loginPageText.setStyle("-fx-font-size: 20; -fx-fill: #3a86ff; -fx-font-weight: bold;");
+
+        ComboBox <String>  personnelComboBox = new ComboBox<>();
+        personnelComboBox.setItems(loadPersonnel());
+        personnelComboBox.setPrefWidth(200);
+        personnelComboBox.setLayoutX(350);
+        personnelComboBox.setLayoutY(100);
+
+        Button loginButton = new Button ("Login");
+        loginButton.setPrefWidth(200);
+        loginButton.setLayoutX(350);
+        loginButton.setLayoutY(150);
+
+
+       loginButton.setOnAction(event -> {
+            String selectedPersonnel =  personnelComboBox.getValue();
+            if (selectedPersonnel != null) {
+                firstScene();
+            }
+
+
+        });
+
+       VBox layout = new VBox(10,loginPageText, personnelComboBox, loginButton);
+       layout.setAlignment(Pos.CENTER);     // Center the VBox
+
+       Scene scene = new Scene(layout, 300, 200);
+
+
+       primaryStage.setScene(scene);
+       primaryStage.setTitle("Personnel Login");
+       primaryStage.show();
+
+   }
+    //Abenezer
+    private ObservableList<String> loadPersonnel() {
+        List<Personnel> personnelList = personnelController.getAll(false);
+        List<String> personnelNames = personnelList.stream()
+                .map(p -> p.getFirstName() + " " + p.getLastName())
+                .collect(Collectors.toList());
+        return FXCollections.observableArrayList(personnelNames);
+    }
+
 
     public void firstScene(){
         primaryStage.setTitle("Piper Games");
@@ -180,6 +237,7 @@ public class GUI extends Application {
 
 
         Button teamButton = new Button("Manage teams");
+        teamButton.setOnAction(event -> manageTeams.teamScene()); //Abenezer
         setButtonLayout(teamButton, 2,150);
         setColors(teamButton,2);
 
@@ -205,8 +263,16 @@ public class GUI extends Application {
         setColors(exitButton,6);
 
 
+        Button logoutButton = new Button("Logout");
+        setButtonLayout(logoutButton, 11, 150);
+        setColors(logoutButton, 6);
+        logoutButton.setOnAction(event -> {
 
-        welcomePane.getChildren().addAll(welcomeText, exitButton, playerButton,teamButton,gameButton,matchButton,staffButton);
+            loginScene();
+        });
+
+
+        welcomePane.getChildren().addAll(welcomeText, exitButton, playerButton,teamButton,gameButton,matchButton,staffButton,logoutButton);
 
         Scene welcomeScene = new Scene(welcomePane, 900, 600);
         primaryStage.setScene(welcomeScene);
